@@ -1,60 +1,43 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const { Telegraf } = require('telegraf');
-const connectDB = require('./config/db.js');
-const userRoutes = require('./routes/userRoutes.js');
+const mongoose = require('mongoose');
 
 const app = express();
-
-connectDB();
-
-app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
 
-app.use('/api/users', userRoutes);
-
-// Telegram Botni ishga tushirish
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEBAPP_URL = process.env.WEBAPP_URL || "https://tekin-sovchi.onrender.com";
-
-console.log("Qidirilayotgan BOT_TOKEN statusi:", BOT_TOKEN ? "Mavjud" : "Yo'q");
-
-if (BOT_TOKEN) {
-  const bot = new Telegraf(BOT_TOKEN);
-
-  bot.start(async (ctx) => {
-    console.log("/start buyrug'i qabul qilindi!");
-    await ctx.reply(`Xush kelibsiz, ${ctx.from.first_name}! "Tekin Sovchi" botiga xush kelibsiz.`, {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: "🚀 Mini App'ni ochish",
-              web_app: { url: WEBAPP_URL }
-            }
-          ]
-        ]
-      }
-    });
-  });
-
-  bot.launch()
-    .then(() => console.log('Telegram Bot muvaffaqiyatli ishga tushdi!'))
-    .catch((err) => console.error('Botni ishga tushirishda xatolik:', err));
-
-  process.once('SIGINT', () => bot.stop('SIGINT'));
-  process.once('SIGTERM', () => bot.stop('SIGTERM'));
-} else {
-  console.warn("XATO: BOT_TOKEN Environment Variables ichida topilmadi!");
+// MongoDB'ga ulanish
+if (process.env.MONGO_URI) {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('MongoDB muvaffaqiyatli ulandi!'))
+    .catch((err) => console.error('MongoDB ulanishida xatolik:', err));
 }
 
+// Telegram Botni sozlash
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
+// /start buyrug'i uchun javob
+bot.start((ctx) => {
+  return ctx.reply('Xush kelibsiz! Mini App-dan foydalanish uchun pastdagi menyu tugmasini bosing.');
+});
+
+// Express marshruti (Render tekshiruvi uchun)
 app.get('/', (req, res) => {
   res.send('Tekin Sovchi API muvaffaqiyatli ishlamoqda!');
 });
 
+// Express serverini ishga tushirish
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server ${PORT}-portda ishga tushdi...`);
+  console.log(`Server ${PORT}-portda ishga tushdi..`);
 });
+
+// Botni Polling rejimida ishga tushirish
+bot.launch().then(() => {
+  console.log('Bot muvaffaqiyatli ishga tushdi!');
+}).catch((err) => {
+  console.error('Botni ishga tushirishda xatolik:', err);
+});
+
+// Server to'xtatilganda botni xavfsiz o'chirish
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
