@@ -3,107 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tekin Sovchi — Mini App</title>
+  <title>TEKIN SOVCHI</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { background-color: #f8fafc; user-select: none; }
-    .blur-photo { filter: blur(8px); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #f7f7f7; color: #333; padding-bottom: 70px; }
+    
+    /* Header */
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #fff; }
+    .title { color: #d81b60; font-size: 20px; font-weight: bold; }
+    .header-icons span { background: #f0f0f0; padding: 8px 10px; border-radius: 50%; margin-left: 5px; cursor: pointer; }
+
+    /* Banner */
+    .vip-banner { background: #fef3c7; border-radius: 12px; padding: 15px; margin: 15px; cursor: pointer; }
+    .vip-badge { background: #f59e0b; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 8px; }
+    .vip-text { font-size: 13px; color: #92400e; font-weight: 500; }
+
+    /* Sections */
+    .tab-content { display: none; padding: 15px; text-align: center; }
+    .tab-content.active { display: block; }
+
+    /* Bottom Navigation */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #888; text-decoration: none; cursor: pointer; }
+    .nav-item.active { color: #d81b60; font-weight: bold; }
+    .nav-icon { font-size: 18px; margin-bottom: 2px; }
   </style>
 </head>
-<body class="pb-20">
+<body>
 
-  <!-- YUQORI HEADER -->
-  <header class="bg-white p-4 shadow-sm flex justify-between items-center sticky top-0 z-10">
-    <h1 class="text-xl font-bold text-rose-600">Tekin Sovchi</h1>
-    <div class="flex items-center gap-3">
-      <button class="p-2 bg-gray-100 rounded-full"><i class="fa-solid fa-sliders text-gray-600"></i></button>
-      <button class="p-2 bg-gray-100 rounded-full"><i class="fa-regular fa-bell text-gray-600"></i></button>
+  <!-- Top Header -->
+  <div class="header">
+    <div class="title">Tekin Sovchi</div>
+    <div class="header-icons">
+      <span onclick="openFilter()">⚙️</span>
+      <span onclick="openNotifications()">🔔</span>
     </div>
-  </header>
+  </div>
 
-  <!-- KATALOG BO'LIMI -->
-  <main id="catalog-section" class="p-4 space-y-4">
-    
-    <!-- VIP NOMZODLAR DOSKASI -->
-    <div class="bg-gradient-to-r from-amber-100 to-amber-200 border border-amber-300 rounded-2xl p-4 shadow-sm">
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-xs font-bold bg-amber-500 text-white px-2 py-0.5 rounded-full"><i class="fa-solid fa-crown mr-1"></i> VIP NOMZODLAR</span>
-        <span class="text-xs text-amber-800">Hammaga ko'rinadi</span>
-      </div>
-      <p class="text-sm font-medium text-amber-900">Profilingizni VIP qiling va birinchilardan bo'lib mosingizni toping!</p>
+  <!-- Main Pages / Tabs -->
+  
+  <!-- 1. KATALOG TAB -->
+  <div id="tab-katalog" class="tab-content active">
+    <div class="vip-banner" onclick="openVipPage()">
+      <span class="vip-badge">👑 VIP NOMZODLAR</span>
+      <p class="vip-text">Profilingizni VIP qiling va birinchilardan bo'lib mosingizni toping!</p>
     </div>
-
-    <!-- NOMZODLAR RO'YXATI CONTAINER -->
-    <div id="candidates-container" class="space-y-4">
-      <div class="text-center py-10 text-gray-500">Nomzodlar yuklanmoqda...</div>
+    <div id="candidates-list" style="margin-top: 40px; color: #777;">
+      Nomzodlar yuklanmoqda...
     </div>
-  </main>
+  </div>
 
-  <!-- PASTKI NAVIGATSIYA MENYUSI (BOTTOM NAVIGATION) -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-20">
-    <button class="flex flex-col items-center text-rose-600 font-semibold text-xs">
-      <i class="fa-solid fa-compass text-lg mb-0.5"></i> Katalog
-    </button>
-    <button class="flex flex-col items-center text-gray-400 text-xs">
-      <i class="fa-regular fa-comment-dots text-lg mb-0.5"></i> Xabarlar
-    </button>
-    <button class="flex flex-col items-center text-gray-400 text-xs">
-      <i class="fa-regular fa-bookmark text-lg mb-0.5"></i> Saqlangan
-    </button>
-    <button class="flex flex-col items-center text-gray-400 text-xs">
-      <i class="fa-regular fa-user text-lg mb-0.5"></i> Men
-    </button>
-  </nav>
+  <!-- 2. XABARLAR TAB -->
+  <div id="tab-xabarlar" class="tab-content">
+    <h3>Xabarlar</h3>
+    <p style="margin-top: 20px; color: #777;">Hozircha hech qanday xabar yo'q</p>
+  </div>
+
+  <!-- 3. SAQLANGAN TAB -->
+  <div id="tab-saqlangan" class="tab-content">
+    <h3>Saqlanganlar</h3>
+    <p style="margin-top: 20px; color: #777;">Saqlangan nomzodlar ro'yxati bo'sh</p>
+  </div>
+
+  <!-- 4. MEN TAB -->
+  <div id="tab-men" class="tab-content">
+    <h3>Mening profilim</h3>
+    <p id="user-profile-info" style="margin-top: 10px; color: #555;"></p>
+  </div>
+
+  <!-- Bottom Navigation Menu -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('katalog', this)">
+      <span class="nav-icon">🧭</span>
+      <span>Katalog</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('xabarlar', this)">
+      <span class="nav-icon">💬</span>
+      <span>Xabarlar</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('saqlangan', this)">
+      <span class="nav-icon">🔖</span>
+      <span>Saqlangan</span>
+    </div>
+    <div class="nav-item" onclick="switchTab('men', this)">
+      <span class="nav-icon">👤</span>
+      <span>Men</span>
+    </div>
+  </div>
 
   <script>
-    const tg = window.Telegram?.WebApp;
-    if (tg) tg.expand();
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-    // Telegram'dan foydalanuvchi ID sini olish (yoki test uchun 1234567)
-    const userTelegramId = tg?.initDataUnsafe?.user?.id || 1234567;
-
-    async function loadCatalog() {
-      try {
-        const res = await fetch(`/api/users/catalog/${userTelegramId}`);
-        const result = await res.json();
-        
-        const container = document.getElementById('candidates-container');
-        container.innerHTML = '';
-
-        if (!result.data || result.data.length === 0) {
-          container.innerHTML = `<div class="text-center py-10 text-gray-400">Hozircha sizga mos nomzodlar topilmadi.</div>`;
-          return;
-        }
-
-        result.data.forEach(user => {
-          const card = document.createElement('div');
-          card.className = "bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex gap-4 items-center relative";
-          
-          card.innerHTML = `
-            <div class="relative w-24 h-24 flex-shrink-0">
-              <img src="${user.photoUrl || 'https://via.placeholder.com/100'}" class="w-full h-full object-cover rounded-xl ${user.isPhotoBlurred ? 'blur-photo' : ''}">
-              <span class="absolute top-1 left-1 bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">${user.matchPercentage}% Mos</span>
-            </div>
-            <div class="flex-grow">
-              <div class="flex items-center gap-1">
-                <h3 class="font-bold text-gray-800">${user.firstName}, ${user.age}</h3>
-                ${user.isVerified ? '<i class="fa-solid fa-circle-check text-blue-500 text-xs"></i>' : ''}
-              </div>
-              <p class="text-xs text-gray-500 mt-0.5"><i class="fa-solid fa-location-dot mr-1"></i>${user.region}</p>
-              <p class="text-xs text-gray-600 mt-1"><i class="fa-solid fa-briefcase mr-1"></i>${user.occupation || 'Ko\'rsatilmagan'}</p>
-              <button class="mt-3 w-full bg-rose-500 hover:bg-rose-600 text-white text-xs py-2 rounded-xl font-medium transition">Suhbat boshlash</button>
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      } catch (err) {
-        console.error(err);
-      }
+    // Telegram foydalanuvchi ma'lumotini Profil bo'limiga chiqarish
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const user = tg.initDataUnsafe.user;
+      document.getElementById('user-profile-info').innerText = `${user.first_name} ${user.last_name || ''} (@${user.username || 'username_yoq'})`;
     }
 
-    loadCatalog();
+    // Tablarni almashtirish funksiyasi
+    function switchTab(tabName, el) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+      document.getElementById('tab-' + tabName).classList.add('active');
+      el.classList.add('active');
+    }
+
+    // Tugmalar bosilgandagi funksiyalar
+    function openFilter() {
+      tg.showAlert("Filter sozlamalari bosildi");
+    }
+
+    function openNotifications() {
+      tg.showAlert("Bildirishnomalar sahifasi");
+    }
+
+    function openVipPage() {
+      tg.showAlert("VIP obuna bo'limi");
+    }
   </script>
 </body>
 </html>
