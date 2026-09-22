@@ -19,7 +19,23 @@ if (process.env.MONGO_URI) {
 
 // REST API YO'LLARI
 
-// 1. Anketa ma'lumotlarini olish
+// 1. Katalog uchun barcha nomzodlarni (filter bilan) olish
+app.get('/api/users', async (req, res) => {
+  try {
+    const { gender, region } = req.query;
+    let filter = {};
+
+    if (gender && gender !== 'Barchasi') filter.gender = gender;
+    if (region && region.trim() !== '') filter.region = new RegExp(region.trim(), 'i');
+
+    const users = await User.find(filter).sort({ isVip: -1, createdAt: -1 });
+    res.json({ success: true, users });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 2. Bitta foydalanuvchi anketasini olish
 app.get('/api/user/:telegramId', async (req, res) => {
   try {
     const user = await User.findOne({ telegramId: req.params.telegramId });
@@ -29,7 +45,7 @@ app.get('/api/user/:telegramId', async (req, res) => {
   }
 });
 
-// 2. Anketani saqlash va yangilash
+// 3. Anketani saqlash va yangilash
 app.post('/api/user/save', async (req, res) => {
   try {
     const { telegramId, name, age, gender, region, job, bio } = req.body;
@@ -68,12 +84,10 @@ bot.start((ctx) => {
   });
 });
 
-// Telegram WebApp so'rovlariga public/index.html faylini uzatish
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Serverni ishga tushirish
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server ${PORT}-portda ishga tushdi..`);
