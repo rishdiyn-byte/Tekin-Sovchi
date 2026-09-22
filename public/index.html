@@ -9,25 +9,27 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
     body { background-color: #f7f7f7; color: #333; padding-bottom: 70px; }
     
-    /* Header */
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #fff; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; }
     .title { color: #d81b60; font-size: 20px; font-weight: bold; }
     .header-icons span { background: #f0f0f0; padding: 8px 10px; border-radius: 50%; margin-left: 5px; cursor: pointer; }
 
-    /* Banner */
     .vip-banner { background: #fef3c7; border-radius: 12px; padding: 15px; margin: 15px; cursor: pointer; }
     .vip-badge { background: #f59e0b; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 8px; }
     .vip-text { font-size: 13px; color: #92400e; font-weight: 500; }
 
-    /* Sections */
-    .tab-content { display: none; padding: 15px; text-align: center; }
+    .tab-content { display: none; padding: 15px; }
     .tab-content.active { display: block; }
 
-    /* Bottom Navigation */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #888; text-decoration: none; cursor: pointer; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #888; cursor: pointer; }
     .nav-item.active { color: #d81b60; font-weight: bold; }
     .nav-icon { font-size: 18px; margin-bottom: 2px; }
+
+    /* Form UI Style */
+    .form-group { text-align: left; margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .btn-submit { width: 100%; padding: 12px; background: #d81b60; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -41,7 +43,7 @@
     </div>
   </div>
 
-  <!-- Main Pages / Tabs -->
+  <!-- Pages -->
   
   <!-- 1. KATALOG TAB -->
   <div id="tab-katalog" class="tab-content active">
@@ -49,27 +51,63 @@
       <span class="vip-badge">👑 VIP NOMZODLAR</span>
       <p class="vip-text">Profilingizni VIP qiling va birinchilardan bo'lib mosingizni toping!</p>
     </div>
-    <div id="candidates-list" style="margin-top: 40px; color: #777;">
+    <div id="candidates-list" style="text-align: center; margin-top: 40px; color: #777;">
       Nomzodlar yuklanmoqda...
     </div>
   </div>
 
   <!-- 2. XABARLAR TAB -->
-  <div id="tab-xabarlar" class="tab-content">
+  <div id="tab-xabarlar" class="tab-content" style="text-align: center;">
     <h3>Xabarlar</h3>
     <p style="margin-top: 20px; color: #777;">Hozircha hech qanday xabar yo'q</p>
   </div>
 
   <!-- 3. SAQLANGAN TAB -->
-  <div id="tab-saqlangan" class="tab-content">
+  <div id="tab-saqlangan" class="tab-content" style="text-align: center;">
     <h3>Saqlanganlar</h3>
     <p style="margin-top: 20px; color: #777;">Saqlangan nomzodlar ro'yxati bo'sh</p>
   </div>
 
-  <!-- 4. MEN TAB -->
+  <!-- 4. MEN TAB (ANKETA) -->
   <div id="tab-men" class="tab-content">
-    <h3>Mening profilim</h3>
-    <p id="user-profile-info" style="margin-top: 10px; color: #555;"></p>
+    <h3 style="text-align: center; margin-bottom: 15px;">Mening anketam</h3>
+    <form id="profile-form" onsubmit="saveProfile(event)">
+      
+      <div class="form-group">
+        <label>Ismingiz:</label>
+        <input type="text" id="p-name" required placeholder="Ismingizni kiriting">
+      </div>
+
+      <div class="form-group">
+        <label>Yoshingiz:</label>
+        <input type="number" id="p-age" required placeholder="Masalan: 25">
+      </div>
+
+      <div class="form-group">
+        <label>Jinsingiz:</label>
+        <select id="p-gender">
+          <option value="Erkak">Erkak</option>
+          <option value="Ayol">Ayol</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Viloyatingiz:</label>
+        <input type="text" id="p-region" required placeholder="Masalan: Farg'ona">
+      </div>
+
+      <div class="form-group">
+        <label>Kasbingiz / Mashg'ulotingiz:</label>
+        <input type="text" id="p-job" placeholder="Masalan: Dasturchi">
+      </div>
+
+      <div class="form-group">
+        <label>O'zingiz haqingizda qo'shimcha:</label>
+        <textarea id="p-bio" rows="3" placeholder="Qo'shimcha ma'lumotlar..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Anketani saqlash</button>
+    </form>
   </div>
 
   <!-- Bottom Navigation Menu -->
@@ -96,13 +134,30 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Telegram foydalanuvchi ma'lumotini Profil bo'limiga chiqarish
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      const user = tg.initDataUnsafe.user;
-      document.getElementById('user-profile-info').innerText = `${user.first_name} ${user.last_name || ''} (@${user.username || 'username_yoq'})`;
-    }
+    const telegramUser = tg.initDataUnsafe?.user;
+    const telegramId = telegramUser?.id || 123456;
 
-    // Tablarni almashtirish funksiyasi
+    // Sahifa yuklanganda mavjud profil ma'lumotlarini bazadan olish
+    window.onload = async () => {
+      try {
+        const res = await fetch(`/api/user/${telegramId}`);
+        const data = await res.json();
+        if (data.success && data.user) {
+          document.getElementById('p-name').value = data.user.name || '';
+          document.getElementById('p-age').value = data.user.age || '';
+          document.getElementById('p-gender').value = data.user.gender || 'Erkak';
+          document.getElementById('p-region').value = data.user.region || '';
+          document.getElementById('p-job').value = data.user.job || '';
+          document.getElementById('p-bio').value = data.user.bio || '';
+        } else if (telegramUser) {
+          document.getElementById('p-name').value = telegramUser.first_name || '';
+        }
+      } catch (err) {
+        console.error("Profilni yuklashda xatolik:", err);
+      }
+    };
+
+    // Tablarni almashtirish
     function switchTab(tabName, el) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
@@ -111,18 +166,40 @@
       el.classList.add('active');
     }
 
-    // Tugmalar bosilgandagi funksiyalar
-    function openFilter() {
-      tg.showAlert("Filter sozlamalari bosildi");
+    // Anketa saqlash
+    async function saveProfile(e) {
+      e.preventDefault();
+
+      const bodyData = {
+        telegramId,
+        name: document.getElementById('p-name').value,
+        age: document.getElementById('p-age').value,
+        gender: document.getElementById('p-gender').value,
+        region: document.getElementById('p-region').value,
+        job: document.getElementById('p-job').value,
+        bio: document.getElementById('p-bio').value,
+      };
+
+      try {
+        const res = await fetch('/api/user/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bodyData)
+        });
+        const data = await res.json();
+        if(data.success) {
+          tg.showAlert("Anketangiz muvaffaqiyatli saqlandi!");
+        } else {
+          tg.showAlert("Xatolik yuz berdi qaytadan urinib ko'ring.");
+        }
+      } catch (err) {
+        tg.showAlert("Server bilan ulanishda xatolik!");
+      }
     }
 
-    function openNotifications() {
-      tg.showAlert("Bildirishnomalar sahifasi");
-    }
-
-    function openVipPage() {
-      tg.showAlert("VIP obuna bo'limi");
-    }
+    function openFilter() { tg.showAlert("Filter oynasi"); }
+    function openNotifications() { tg.showAlert("Bildirishnomalar oynasi"); }
+    function openVipPage() { tg.showAlert("VIP obuna oynasi"); }
   </script>
 </body>
 </html>

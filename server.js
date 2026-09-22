@@ -2,11 +2,12 @@ const express = require('express');
 const { Telegraf } = require('telegraf');
 const mongoose = require('mongoose');
 const path = require('path');
+const User = require('./models/User');
 
 const app = express();
 app.use(express.json());
 
-// Public papkasidagi HTML/CSS/JS fayllarni uzatish
+// Public papkasidagi statik fayllarni ulash
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB ulanishi
@@ -16,10 +17,38 @@ if (process.env.MONGO_URI) {
     .catch((err) => console.error('MongoDB ulanishida xatolik:', err));
 }
 
+// REST API YO'LLARI
+
+// 1. Anketa ma'lumotlarini olish
+app.get('/api/user/:telegramId', async (req, res) => {
+  try {
+    const user = await User.findOne({ telegramId: req.params.telegramId });
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 2. Anketani saqlash va yangilash
+app.post('/api/user/save', async (req, res) => {
+  try {
+    const { telegramId, name, age, gender, region, job, bio } = req.body;
+    
+    let user = await User.findOneAndUpdate(
+      { telegramId },
+      { name, age, gender, region, job, bio },
+      { new: true, upsert: true }
+    );
+
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // Telegram Bot
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// /start buyrug'i
 bot.start((ctx) => {
   let url = process.env.WEBAPP_URL || "https://tekin-sovchi.onrender.com";
   url = url.replace(/[()\[\]]/g, '').trim();
@@ -39,18 +68,17 @@ bot.start((ctx) => {
   });
 });
 
-// Telegram WebApp so'rovlariga public/index.html faylini qaytarish
+// Telegram WebApp so'rovlariga public/index.html faylini uzatish
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Portni sozlash
+// Serverni ishga tushirish
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server ${PORT}-portda ishga tushdi..`);
 });
 
-// Botni Polling rejimida ishga tushirish
 bot.launch()
   .then(() => console.log('Bot muvaffaqiyatli ishga tushdi!'))
   .catch((err) => console.error('Botni ishga tushirishda xatolik:', err));
