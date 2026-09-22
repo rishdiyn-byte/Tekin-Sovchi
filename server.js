@@ -19,7 +19,7 @@ if (process.env.MONGO_URI) {
 
 // REST API YO'LLARI
 
-// 1. Katalog uchun barcha nomzodlarni (filter bilan) olish
+// 1. Katalog uchun barcha nomzodlarni olish
 app.get('/api/users', async (req, res) => {
   try {
     const { gender, region } = req.query;
@@ -48,11 +48,11 @@ app.get('/api/user/:telegramId', async (req, res) => {
 // 3. Anketani saqlash va yangilash
 app.post('/api/user/save', async (req, res) => {
   try {
-    const { telegramId, name, age, gender, region, job, bio } = req.body;
+    const { telegramId, name, age, gender, region, job, photoUrl, bio } = req.body;
     
     let user = await User.findOneAndUpdate(
       { telegramId },
-      { name, age, gender, region, job, bio },
+      { name, age, gender, region, job, photoUrl, bio },
       { new: true, upsert: true }
     );
 

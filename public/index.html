@@ -21,13 +21,20 @@
     .tab-content.active { display: block; }
 
     /* Candidates Card Style */
-    .user-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: left; position: relative; border: 1px solid #eee; }
+    .user-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: left; border: 1px solid #eee; }
     .user-card.vip { border: 2px solid #f59e0b; background: #fffdf5; }
+    .user-card .card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
     .user-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .user-card .name { font-size: 16px; font-weight: bold; color: #111; }
     .user-card .tag { background: #e0f2fe; color: #0369a1; font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
     .user-card .info { font-size: 13px; color: #666; margin-bottom: 4px; }
-    .user-card .bio { font-size: 12px; color: #888; font-style: italic; margin-top: 6px; }
+    .user-card .bio { font-size: 12px; color: #888; font-style: italic; margin-top: 6px; margin-bottom: 10px; }
+
+    /* Card Action Buttons */
+    .card-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-action { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; }
+    .btn-contact { background: #d81b60; color: white; }
+    .btn-save { background: #f0f0f0; color: #333; }
 
     /* Form UI Style */
     .form-group { text-align: left; margin-bottom: 12px; }
@@ -78,9 +85,11 @@
   </div>
 
   <!-- 3. SAQLANGAN TAB -->
-  <div id="tab-saqlangan" class="tab-content" style="text-align: center;">
-    <h3>Saqlanganlar</h3>
-    <p style="margin-top: 20px; color: #777;">Saqlangan nomzodlar ro'yxati bo'sh</p>
+  <div id="tab-saqlangan" class="tab-content">
+    <h3 style="text-align: center; margin-bottom: 15px;">Saqlangan nomzodlar</h3>
+    <div id="saved-list">
+      <p style="text-align: center; color: #777; margin-top: 20px;">Saqlangan nomzodlar ro'yxati bo'sh</p>
+    </div>
   </div>
 
   <!-- 4. MEN TAB (ANKETA) -->
@@ -114,6 +123,11 @@
       <div class="form-group">
         <label>Kasbingiz / Mashg'ulotingiz:</label>
         <input type="text" id="p-job" placeholder="Masalan: Dasturchi">
+      </div>
+
+      <div class="form-group">
+        <label>Rasm manzili (URL):</label>
+        <input type="url" id="p-photo" placeholder="https://example.com/rasm.jpg">
       </div>
 
       <div class="form-group">
@@ -174,10 +188,12 @@
 
     const telegramUser = tg.initDataUnsafe?.user;
     const telegramId = telegramUser?.id || 123456;
+    let savedCandidates = JSON.parse(localStorage.getItem('saved_candidates') || '[]');
 
     window.onload = async () => {
       loadCandidates();
       loadUserProfile();
+      renderSavedCandidates();
     };
 
     // Katalog nomzodlarini bazadan yuklash
@@ -190,23 +206,78 @@
         const data = await res.json();
 
         if (data.success && data.users.length > 0) {
-          container.innerHTML = data.users.map(u => `
-            <div class="user-card ${u.isVip ? 'vip' : ''}">
-              <div class="card-header">
-                <span class="name">${u.name}, ${u.age} yosh</span>
-                <span class="tag">${u.gender}</span>
-              </div>
-              <div class="info">📍 <b>Viloyat:</b> ${u.region}</div>
-              <div class="info">💼 <b>Kasbi:</b> ${u.job || 'Ko\'rsatilmagan'}</div>
-              ${u.bio ? `<div class="bio">"${u.bio}"</div>` : ''}
-            </div>
-          `).join('');
+          container.innerHTML = data.users.map(u => renderUserCard(u)).join('');
         } else {
           container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 30px;">Hozircha hech qanday nomzod topilmadi.</p>';
         }
       } catch (err) {
         container.innerHTML = '<p style="text-align: center; color: red; margin-top: 30px;">Ma\'lumotlarni yuklashda xatolik!</p>';
       }
+    }
+
+    // Kartochka HTML tayyorlash
+    function renderUserCard(u) {
+      const defaultImg = "https://via.placeholder.com/300x180?text=Rasm+Yo%27q";
+      const isSaved = savedCandidates.some(item => item.telegramId === u.telegramId);
+
+      return `
+        <div class="user-card ${u.isVip ? 'vip' : ''}">
+          <img src="${u.photoUrl || defaultImg}" class="card-img" alt="${u.name}" onerror="this.src='${defaultImg}'">
+          <div class="card-header">
+            <span class="name">${u.name}, ${u.age} yosh</span>
+            <span class="tag">${u.gender}</span>
+          </div>
+          <div class="info">📍 <b>Viloyat:</b> ${u.region}</div>
+          <div class="info">💼 <b>Kasbi:</b> ${u.job || 'Ko\'rsatilmagan'}</div>
+          ${u.bio ? `<div class="bio">"${u.bio}"</div>` : ''}
+          
+          <div class="card-actions">
+            <button class="btn-action btn-contact" onclick="openContact('${u.telegramId}')">Bog'lanish 💬</button>
+            <button class="btn-action btn-save" onclick="toggleSave('${u.telegramId}', '${u.name}', '${u.age}', '${u.region}')">
+              ${isSaved ? 'Saqlangan 🔖' : 'Saqlash 🔖'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Telegram orqali bog'lanish
+    function openContact(id) {
+      tg.openTelegramLink(`https://t.me/user?id=${id}`);
+    }
+
+    // Saqlanganlarga qo'shish / o'chirish
+    function toggleSave(id, name, age, region) {
+      const idx = savedCandidates.findIndex(item => item.telegramId === id);
+      if (idx > -1) {
+        savedCandidates.splice(idx, 1);
+        tg.showAlert("Nomzod saqlanganlardan o'chirildi");
+      } else {
+        savedCandidates.push({ telegramId: id, name, age, region });
+        tg.showAlert("Nomzod saqlanganlarga qo'shildi!");
+      }
+      localStorage.setItem('saved_candidates', JSON.stringify(savedCandidates));
+      loadCandidates();
+      renderSavedCandidates();
+    }
+
+    function renderSavedCandidates() {
+      const container = document.getElementById('saved-list');
+      if (savedCandidates.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 20px;">Saqlangan nomzodlar ro'yxati bo'sh</p>';
+        return;
+      }
+      container.innerHTML = savedCandidates.map(u => `
+        <div class="user-card">
+          <div class="card-header">
+            <span class="name">${u.name}, ${u.age} yosh</span>
+          </div>
+          <div class="info">📍 <b>Viloyat:</b> ${u.region}</div>
+          <div class="card-actions">
+            <button class="btn-action btn-contact" onclick="openContact('${u.telegramId}')">Bog'lanish 💬</button>
+          </div>
+        </div>
+      `).join('');
     }
 
     // Profil ma'lumotlarini yuklash
@@ -220,6 +291,7 @@
           document.getElementById('p-gender').value = data.user.gender || 'Erkak';
           document.getElementById('p-region').value = data.user.region || '';
           document.getElementById('p-job').value = data.user.job || '';
+          document.getElementById('p-photo').value = data.user.photoUrl || '';
           document.getElementById('p-bio').value = data.user.bio || '';
         } else if (telegramUser) {
           document.getElementById('p-name').value = telegramUser.first_name || '';
@@ -247,6 +319,7 @@
         gender: document.getElementById('p-gender').value,
         region: document.getElementById('p-region').value,
         job: document.getElementById('p-job').value,
+        photoUrl: document.getElementById('p-photo').value,
         bio: document.getElementById('p-bio').value,
       };
 
@@ -259,7 +332,7 @@
         const data = await res.json();
         if(data.success) {
           tg.showAlert("Anketangiz muvaffaqiyatli saqlandi!");
-          loadCandidates(); // Katalogni qayta yuklaydi
+          loadCandidates();
         } else {
           tg.showAlert("Xatolik yuz berdi!");
         }
@@ -268,18 +341,13 @@
       }
     }
 
-    // Filter funksiyalari
-    function toggleFilterModal(show) {
-      document.getElementById('filter-modal').style.display = show ? 'flex' : 'none';
-    }
-
+    function toggleFilterModal(show) { document.getElementById('filter-modal').style.display = show ? 'flex' : 'none'; }
     function applyFilter() {
       const gender = document.getElementById('filter-gender').value;
       const region = document.getElementById('filter-region').value;
       toggleFilterModal(false);
       loadCandidates(gender, region);
     }
-
     function openNotifications() { tg.showAlert("Bildirishnomalar mavjud emas"); }
     function openVipPage() { tg.showAlert("VIP xizmati tez kunda ishga tushadi!"); }
   </script>
