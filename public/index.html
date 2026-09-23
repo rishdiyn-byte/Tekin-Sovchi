@@ -7,49 +7,52 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f7f7f7; color: #333; padding-bottom: 70px; }
+    body { background-color: #f7f7f7; color: #333; padding-bottom: 80px; }
     
+    /* Top Header */
     .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; }
     .title { color: #d81b60; font-size: 20px; font-weight: bold; }
-    .header-icons span { background: #f0f0f0; padding: 8px 10px; border-radius: 50%; margin-left: 5px; cursor: pointer; }
+    .header-icons span { background: #f0f0f0; padding: 8px 10px; border-radius: 50%; margin-left: 5px; cursor: pointer; display: inline-block; }
 
     .vip-banner { background: #fef3c7; border-radius: 12px; padding: 15px; margin: 15px; cursor: pointer; border: 1px solid #fde68a; }
     .vip-badge { background: #f59e0b; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
     .vip-text { font-size: 13px; color: #92400e; font-weight: 500; }
 
+    /* Tab Content Control */
     .tab-content { display: none; padding: 15px; }
     .tab-content.active { display: block; }
 
-    /* Candidates Card Style */
+    /* User Cards */
     .user-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: left; border: 1px solid #eee; }
     .user-card.vip { border: 2px solid #f59e0b; background: #fffdf5; }
-    .user-card .card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+    .user-card .card-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: #eee; }
     .user-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .user-card .name { font-size: 16px; font-weight: bold; color: #111; }
     .user-card .tag { background: #e0f2fe; color: #0369a1; font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
     .user-card .info { font-size: 13px; color: #666; margin-bottom: 4px; }
     .user-card .bio { font-size: 12px; color: #888; font-style: italic; margin-top: 6px; margin-bottom: 10px; }
 
-    /* Card Action Buttons */
     .card-actions { display: flex; gap: 8px; margin-top: 10px; }
-    .btn-action { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; }
+    .btn-action { flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; text-align: center; }
     .btn-contact { background: #d81b60; color: white; }
     .btn-save { background: #f0f0f0; color: #333; }
 
-    /* Form UI Style */
+    /* Form Styles */
     .form-group { text-align: left; margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
     .btn-submit { width: 100%; padding: 12px; background: #d81b60; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
+    
+    .photo-preview { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 8px; display: none; }
 
-    /* Bottom Navigation */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 10; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #888; cursor: pointer; }
+    /* Bottom Navigation Bar */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 100; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #888; cursor: pointer; width: 25%; text-align: center; }
     .nav-item.active { color: #d81b60; font-weight: bold; }
     .nav-icon { font-size: 18px; margin-bottom: 2px; }
 
-    /* Modal (Filter) */
-    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 20; justify-content: center; align-items: center; }
+    /* Modal Window */
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
     .modal-content { background: #fff; width: 90%; max-width: 400px; padding: 20px; border-radius: 12px; }
   </style>
 </head>
@@ -64,27 +67,24 @@
     </div>
   </div>
 
-  <!-- Pages -->
-  
-  <!-- 1. KATALOG TAB -->
+  <!-- PAGE 1: KATALOG -->
   <div id="tab-katalog" class="tab-content active">
     <div class="vip-banner" onclick="openVipPage()">
       <span class="vip-badge">👑 VIP NOMZODLAR</span>
       <p class="vip-text">Profilingizni VIP qiling va birinchilardan bo'lib mosingizni toping!</p>
     </div>
-    
     <div id="candidates-list">
       <p style="text-align: center; color: #777; margin-top: 30px;">Nomzodlar yuklanmoqda...</p>
     </div>
   </div>
 
-  <!-- 2. XABARLAR TAB -->
+  <!-- PAGE 2: XABARLAR -->
   <div id="tab-xabarlar" class="tab-content" style="text-align: center;">
-    <h3>Xabarlar</h3>
-    <p style="margin-top: 20px; color: #777;">Hozircha hech qanday xabar yo'q</p>
+    <h3 style="margin-bottom: 10px;">Xabarlar</h3>
+    <p style="color: #777; margin-top: 20px;">Hozircha hech qanday xabar yo'q</p>
   </div>
 
-  <!-- 3. SAQLANGAN TAB -->
+  <!-- PAGE 3: SAQLANGAN -->
   <div id="tab-saqlangan" class="tab-content">
     <h3 style="text-align: center; margin-bottom: 15px;">Saqlangan nomzodlar</h3>
     <div id="saved-list">
@@ -92,7 +92,7 @@
     </div>
   </div>
 
-  <!-- 4. MEN TAB (ANKETA) -->
+  <!-- PAGE 4: MEN (ANKETA) -->
   <div id="tab-men" class="tab-content">
     <h3 style="text-align: center; margin-bottom: 15px;">Mening anketam</h3>
     <form id="profile-form" onsubmit="saveProfile(event)">
@@ -126,8 +126,10 @@
       </div>
 
       <div class="form-group">
-        <label>Rasm manzili (URL):</label>
-        <input type="url" id="p-photo" placeholder="https://example.com/rasm.jpg">
+        <label>Rasmingizni yuklang:</label>
+        <input type="file" id="p-file" accept="image/*" onchange="uploadImage(event)">
+        <input type="hidden" id="p-photo">
+        <img id="photo-preview-img" class="photo-preview" src="" alt="Rasm">
       </div>
 
       <div class="form-group">
@@ -135,11 +137,11 @@
         <textarea id="p-bio" rows="3" placeholder="Qo'shimcha ma'lumotlar..."></textarea>
       </div>
 
-      <button type="submit" class="btn-submit">Anketani saqlash</button>
+      <button type="submit" id="btn-save-profile" class="btn-submit">Anketani saqlash</button>
     </form>
   </div>
 
-  <!-- Filter Modal Window -->
+  <!-- Filter Modal -->
   <div id="filter-modal" class="modal">
     <div class="modal-content">
       <h3 style="margin-bottom: 15px;">Qidiruv filtri</h3>
@@ -183,41 +185,64 @@
   </div>
 
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    // Telegram WebApp initialization
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
 
-    const telegramUser = tg.initDataUnsafe?.user;
-    const telegramId = telegramUser?.id || 123456;
+    const telegramUser = tg?.initDataUnsafe?.user;
+    const telegramId = telegramUser?.id || "123456";
     let savedCandidates = JSON.parse(localStorage.getItem('saved_candidates') || '[]');
 
-    window.onload = async () => {
+    document.addEventListener("DOMContentLoaded", () => {
       loadCandidates();
       loadUserProfile();
       renderSavedCandidates();
-    };
+    });
 
-    // Katalog nomzodlarini bazadan yuklash
+    // Custom Alert
+    function showAlert(msg) {
+      if (tg && tg.showAlert) {
+        tg.showAlert(msg);
+      } else {
+        alert(msg);
+      }
+    }
+
+    // Tab Switcher
+    function switchTab(tabName, element) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+      const targetTab = document.getElementById('tab-' + tabName);
+      if (targetTab) targetTab.classList.add('active');
+      if (element) element.classList.add('active');
+    }
+
+    // Nomzodlarni yuklash
     async function loadCandidates(gender = 'Barchasi', region = '') {
       const container = document.getElementById('candidates-list');
       container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 30px;">Yuklanmoqda...</p>';
 
       try {
-        const res = await fetch(`/api/users?gender=${gender}&region=${encodeURIComponent(region)}`);
+        const res = await fetch(`/api/users?gender=${encodeURIComponent(gender)}&region=${encodeURIComponent(region)}`);
         const data = await res.json();
 
         if (data.success && data.users.length > 0) {
           container.innerHTML = data.users.map(u => renderUserCard(u)).join('');
         } else {
-          container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 30px;">Hozircha hech qanday nomzod topilmadi.</p>';
+          container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 30px;">Hozircha hech qanday tasdiqlangan nomzod topilmadi.</p>';
         }
       } catch (err) {
-        container.innerHTML = '<p style="text-align: center; color: red; margin-top: 30px;">Ma\'lumotlarni yuklashda xatolik!</p>';
+        container.innerHTML = '<p style="text-align: center; color: red; margin-top: 30px;">Ma\'lumotlarni yuklashda xatolik yuz berdi.</p>';
       }
     }
 
-    // Kartochka HTML tayyorlash
+    // Kartochka HTML
     function renderUserCard(u) {
-      const defaultImg = "https://via.placeholder.com/300x180?text=Rasm+Yo%27q";
+      const defaultImg = "https://via.placeholder.com/300x200?text=Rasm+Yo%27q";
       const isSaved = savedCandidates.some(item => item.telegramId === u.telegramId);
 
       return `
@@ -234,27 +259,67 @@
           <div class="card-actions">
             <button class="btn-action btn-contact" onclick="openContact('${u.telegramId}')">Bog'lanish 💬</button>
             <button class="btn-action btn-save" onclick="toggleSave('${u.telegramId}', '${u.name}', '${u.age}', '${u.region}')">
-              ${isSaved ? 'Saqlangan 🔖' : 'Saqlash 🔖'}
+              ${isSaved ? 'O\'chirish 🗑️' : 'Saqlash 🔖'}
             </button>
           </div>
         </div>
       `;
     }
 
-    // Telegram orqali bog'lanish
-    function openContact(id) {
-      tg.openTelegramLink(`https://t.me/user?id=${id}`);
+    // Rasm yuklash
+    async function uploadImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('photo', file);
+
+      const btn = document.getElementById('btn-save-profile');
+      btn.disabled = true;
+      btn.innerText = "Rasm yuklanmoqda...";
+
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById('p-photo').value = data.photoUrl;
+          const imgPreview = document.getElementById('photo-preview-img');
+          imgPreview.src = data.photoUrl;
+          imgPreview.style.display = 'block';
+          showAlert("Rasm muvaffaqiyatli yuklandi!");
+        } else {
+          showAlert("Rasm yuklashda xatolik!");
+        }
+      } catch (err) {
+        showAlert("Serverga ulanishda xatolik!");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Anketani saqlash";
+      }
     }
 
-    // Saqlanganlarga qo'shish / o'chirish
+    // Telegram profiliga o'tish
+    function openContact(id) {
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(`https://t.me/user?id=${id}`);
+      } else {
+        window.open(`https://t.me/user?id=${id}`, '_blank');
+      }
+    }
+
+    // Saqlanganlar
     function toggleSave(id, name, age, region) {
       const idx = savedCandidates.findIndex(item => item.telegramId === id);
       if (idx > -1) {
         savedCandidates.splice(idx, 1);
-        tg.showAlert("Nomzod saqlanganlardan o'chirildi");
+        showAlert("Nomzod saqlanganlardan o'chirildi");
       } else {
         savedCandidates.push({ telegramId: id, name, age, region });
-        tg.showAlert("Nomzod saqlanganlarga qo'shildi!");
+        showAlert("Nomzod saqlanganlarga qo'shildi!");
       }
       localStorage.setItem('saved_candidates', JSON.stringify(savedCandidates));
       loadCandidates();
@@ -264,7 +329,7 @@
     function renderSavedCandidates() {
       const container = document.getElementById('saved-list');
       if (savedCandidates.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 20px;">Saqlangan nomzodlar ro'yxati bo'sh</p>';
+        container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 20px;">Saqlangan nomzodlar ro\'yxati bo\'sh</p>';
         return;
       }
       container.innerHTML = savedCandidates.map(u => `
@@ -275,12 +340,13 @@
           <div class="info">📍 <b>Viloyat:</b> ${u.region}</div>
           <div class="card-actions">
             <button class="btn-action btn-contact" onclick="openContact('${u.telegramId}')">Bog'lanish 💬</button>
+            <button class="btn-action btn-save" onclick="toggleSave('${u.telegramId}')">O'chirish 🗑️</button>
           </div>
         </div>
       `).join('');
     }
 
-    // Profil ma'lumotlarini yuklash
+    // Profilni serverdan olish
     async function loadUserProfile() {
       try {
         const res = await fetch(`/api/user/${telegramId}`);
@@ -293,22 +359,19 @@
           document.getElementById('p-job').value = data.user.job || '';
           document.getElementById('p-photo').value = data.user.photoUrl || '';
           document.getElementById('p-bio').value = data.user.bio || '';
+
+          if (data.user.photoUrl) {
+            const imgPreview = document.getElementById('photo-preview-img');
+            imgPreview.src = data.user.photoUrl;
+            imgPreview.style.display = 'block';
+          }
         } else if (telegramUser) {
           document.getElementById('p-name').value = telegramUser.first_name || '';
         }
       } catch (err) { console.error(err); }
     }
 
-    // Tablarni almashtirish
-    function switchTab(tabName, el) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-
-      document.getElementById('tab-' + tabName).classList.add('active');
-      el.classList.add('active');
-    }
-
-    // Anketa saqlash
+    // Profilni saqlash
     async function saveProfile(e) {
       e.preventDefault();
 
@@ -331,16 +394,16 @@
         });
         const data = await res.json();
         if(data.success) {
-          tg.showAlert("Anketangiz muvaffaqiyatli saqlandi!");
-          loadCandidates();
+          showAlert("Anketangiz moderatsiyaga yuborildi! Admin tasdiqlashini kuting.");
         } else {
-          tg.showAlert("Xatolik yuz berdi!");
+          showAlert("Xatolik yuz berdi!");
         }
       } catch (err) {
-        tg.showAlert("Server bilan ulanishda xatolik!");
+        showAlert("Server bilan ulanishda xatolik!");
       }
     }
 
+    // Modals va Bannerlar
     function toggleFilterModal(show) { document.getElementById('filter-modal').style.display = show ? 'flex' : 'none'; }
     function applyFilter() {
       const gender = document.getElementById('filter-gender').value;
@@ -348,8 +411,8 @@
       toggleFilterModal(false);
       loadCandidates(gender, region);
     }
-    function openNotifications() { tg.showAlert("Bildirishnomalar mavjud emas"); }
-    function openVipPage() { tg.showAlert("VIP xizmati tez kunda ishga tushadi!"); }
+    function openNotifications() { showAlert("Yangi bildirishnomalar mavjud emas"); }
+    function openVipPage() { showAlert("VIP xizmati tez kunda ishga tushadi!"); }
   </script>
 </body>
 </html>
