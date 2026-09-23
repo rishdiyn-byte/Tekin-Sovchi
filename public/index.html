@@ -2,417 +2,473 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEKIN SOVCHI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tekin Sovchi</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f7f7f7; color: #333; padding-bottom: 80px; }
-    
-    /* Top Header */
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; }
-    .title { color: #d81b60; font-size: 20px; font-weight: bold; }
-    .header-icons span { background: #f0f0f0; padding: 8px 10px; border-radius: 50%; margin-left: 5px; cursor: pointer; display: inline-block; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    .vip-banner { background: #fef3c7; border-radius: 12px; padding: 15px; margin: 15px; cursor: pointer; border: 1px solid #fde68a; }
-    .vip-badge { background: #f59e0b; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
-    .vip-text { font-size: 13px; color: #92400e; font-weight: 500; }
+    body {
+      background-color: #0b140f;
+      color: #ffffff;
+      padding-bottom: 70px;
+    }
 
-    /* Tab Content Control */
-    .tab-content { display: none; padding: 15px; }
-    .tab-content.active { display: block; }
+    .tab-content {
+      display: none;
+    }
 
-    /* User Cards */
-    .user-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: left; border: 1px solid #eee; }
-    .user-card.vip { border: 2px solid #f59e0b; background: #fffdf5; }
-    .user-card .card-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: #eee; }
-    .user-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .user-card .name { font-size: 16px; font-weight: bold; color: #111; }
-    .user-card .tag { background: #e0f2fe; color: #0369a1; font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
-    .user-card .info { font-size: 13px; color: #666; margin-bottom: 4px; }
-    .user-card .bio { font-size: 12px; color: #888; font-style: italic; margin-top: 6px; margin-bottom: 10px; }
+    .tab-content.active {
+      display: block;
+    }
 
-    .card-actions { display: flex; gap: 8px; margin-top: 10px; }
-    .btn-action { flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; text-align: center; }
-    .btn-contact { background: #d81b60; color: white; }
-    .btn-save { background: #f0f0f0; color: #333; }
+    /* Pastki menyu navbars */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: #121d17;
+      border-top: 1px solid #1c2e22;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+    }
 
-    /* Form Styles */
-    .form-group { text-align: left; margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; font-weight: 600; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
-    .btn-submit { width: 100%; padding: 12px; background: #d81b60; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
-    
-    .photo-preview { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 8px; display: none; }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6b8273;
+      text-decoration: none;
+      font-size: 11px;
+      width: 25%;
+      cursor: pointer;
+    }
 
-    /* Bottom Navigation Bar */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 100; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #888; cursor: pointer; width: 25%; text-align: center; }
-    .nav-item.active { color: #d81b60; font-weight: bold; }
-    .nav-icon { font-size: 18px; margin-bottom: 2px; }
+    .nav-item.active {
+      color: #4ade80;
+    }
 
-    /* Modal Window */
-    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
-    .modal-content { background: #fff; width: 90%; max-width: 400px; padding: 20px; border-radius: 12px; }
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 3px;
+      fill: currentColor;
+    }
+
+    .menu-item {
+      transition: background 0.2s;
+    }
+
+    .menu-item:active {
+      background: #1c2e22;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Header -->
-  <div class="header">
-    <div class="title">Tekin Sovchi</div>
-    <div class="header-icons">
-      <span onclick="toggleFilterModal(true)">⚙️</span>
-      <span onclick="openNotifications()">🔔</span>
+  <!-- 1-TAB: KATALOG -->
+  <div id="tab-katalog" class="tab-content active" style="padding: 16px;">
+    <h2 style="font-size: 20px; margin-bottom: 16px;">Nomzodlar katalogi</h2>
+    <div id="catalog-list" style="display: flex; flex-direction: column; gap: 12px;">
+      <p style="color: #6b8273; text-align: center; margin-top: 40px;">Nomzodlar yuklanmoqda...</p>
     </div>
   </div>
 
-  <!-- PAGE 1: KATALOG -->
-  <div id="tab-katalog" class="tab-content active">
-    <div class="vip-banner" onclick="openVipPage()">
-      <span class="vip-badge">👑 VIP NOMZODLAR</span>
-      <p class="vip-text">Profilingizni VIP qiling va birinchilardan bo'lib mosingizni toping!</p>
-    </div>
-    <div id="candidates-list">
-      <p style="text-align: center; color: #777; margin-top: 30px;">Nomzodlar yuklanmoqda...</p>
+  <!-- 2-TAB: XABARLAR -->
+  <div id="tab-xabarlar" class="tab-content" style="padding: 16px; text-align: center;">
+    <h2 style="font-size: 20px; margin-bottom: 20px;">Xabarlar</h2>
+    <div style="margin-top: 60px; color: #6b8273;">
+      <span style="font-size: 40px;">💬</span>
+      <p style="margin-top: 10px;">Hali hech qanday xabar yo'q</p>
     </div>
   </div>
 
-  <!-- PAGE 2: XABARLAR -->
-  <div id="tab-xabarlar" class="tab-content" style="text-align: center;">
-    <h3 style="margin-bottom: 10px;">Xabarlar</h3>
-    <p style="color: #777; margin-top: 20px;">Hozircha hech qanday xabar yo'q</p>
-  </div>
-
-  <!-- PAGE 3: SAQLANGAN -->
-  <div id="tab-saqlangan" class="tab-content">
-    <h3 style="text-align: center; margin-bottom: 15px;">Saqlangan nomzodlar</h3>
-    <div id="saved-list">
-      <p style="text-align: center; color: #777; margin-top: 20px;">Saqlangan nomzodlar ro'yxati bo'sh</p>
+  <!-- 3-TAB: SAQLANGANLAR -->
+  <div id="tab-saqlangan" class="tab-content" style="padding: 16px; text-align: center;">
+    <h2 style="font-size: 20px; margin-bottom: 20px;">Saqlanganlar</h2>
+    <div style="margin-top: 60px; color: #6b8273;">
+      <span style="font-size: 40px;">🔖</span>
+      <p style="margin-top: 10px;">Saqlangan anketalar mavjud emas</p>
     </div>
   </div>
 
-  <!-- PAGE 4: MEN (ANKETA) -->
-  <div id="tab-men" class="tab-content">
-    <h3 style="text-align: center; margin-bottom: 15px;">Mening anketam</h3>
-    <form id="profile-form" onsubmit="saveProfile(event)">
+  <!-- 4-TAB: MEN (PROFIL) -->
+  <div id="tab-profile" class="tab-content" style="padding: 16px;">
+
+    <!-- Profil kartochkasi -->
+    <div style="background: #14231a; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img id="user-avatar" src="https://via.placeholder.com/60" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover;">
+          <div>
+            <h3 id="user-name-age" style="margin: 0; font-size: 18px; font-weight: bold;">Foydalanuvchi</h3>
+            <p id="user-region" style="margin: 4px 0 0 0; font-size: 13px; color: #8ea195;">📍 Tumani/Viloyati</p>
+          </div>
+        </div>
+        <button onclick="alert('Tahrirlash bo\'limi')" style="background: rgba(255,255,255,0.08); border: 1px solid #284433; color: #4ade80; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer;">Tahrirlash</button>
+      </div>
+
+      <!-- Profil foizi -->
+      <div style="margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+          <span style="color: #a3b8ab;">Profil to'ldirilgani</span>
+          <span style="color: #4ade80; font-weight: bold;">91% &gt;</span>
+        </div>
+        <div style="width: 100%; background: #203628; height: 6px; border-radius: 3px; overflow: hidden;">
+          <div style="width: 91%; background: #4ade80; height: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Sovg'a bloki -->
+      <div style="background: #1d2e23; border-radius: 12px; padding: 12px; margin-top: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 20px;">🎁</span>
+          <span style="font-size: 12px; color: #d1dcd5;">100% to'ldirsangiz — <b>1 bepul suhbat sovg'a</b></span>
+        </div>
+        <span style="color: #4ade80; font-size: 12px; font-weight: bold; cursor: pointer;">To'ldirish &rarr;</span>
+      </div>
+
+      <p style="font-size: 11px; color: #6b8273; margin: 12px 0 0 0;">To'liq profil katalogda yuqoriroq chiqadi va ko'proq javob oladi.</p>
+
+      <!-- AI Maslahati -->
+      <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #203628; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 16px;">🪄</span>
+          <div>
+            <div style="font-size: 13px; font-weight: bold;">AI maslahati</div>
+            <div style="font-size: 11px; color: #8ea195;">Profilingizni kuchaytirish bo'yicha 2 tavsiya</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+    </div>
+
+    <!-- Premium Baner -->
+    <div style="background: #0f3822; border-radius: 16px; padding: 16px; margin-bottom: 20px; text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;">
+        <span style="font-size: 24px;">👀</span>
+        <span style="font-size: 16px; font-weight: bold;">2 kishi profilingizni ko'rdi</span>
+      </div>
+      <p style="font-size: 12px; color: #a3c9b1; margin: 0 0 14px 0;">Kim ekanini biling va katalogda yuqorida chiqing.</p>
+      <button style="width: 100%; background: #ffffff; color: #0b140f; border: none; padding: 12px; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer;">
+        Premium olish — 129 000 so'm/oy
+      </button>
+    </div>
+
+    <!-- TARIF VA IMKONIYATLAR -->
+    <div style="font-size: 11px; font-weight: bold; color: #5a7363; letter-spacing: 0.5px; margin-bottom: 8px;">TARIF VA IMKONIYATLAR</div>
+    <div style="background: #14231a; border-radius: 16px; overflow: hidden; margin-bottom: 20px;">
       
-      <div class="form-group">
-        <label>Ismingiz:</label>
-        <input type="text" id="p-name" required placeholder="Ismingizni kiriting">
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">👀</span>
+          <div>
+            <div style="font-size: 14px;">Kim sizni ko'rdi</div>
+            <div style="font-size: 11px; color: #4ade80;">🔒 2 kishi · kim ekanini ko'rish</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
       </div>
 
-      <div class="form-group">
-        <label>Yoshingiz:</label>
-        <input type="number" id="p-age" required placeholder="Masalan: 25">
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">💚</span>
+          <div>
+            <div style="font-size: 14px;">Kim sizni saqladi</div>
+            <div style="font-size: 11px; color: #6b8273;">🔒 Hali saqlanmagan</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
       </div>
 
-      <div class="form-group">
-        <label>Jinsingiz:</label>
-        <select id="p-gender">
-          <option value="Erkak">Erkak</option>
-          <option value="Ayol">Ayol</option>
-        </select>
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">📊</span>
+          <div>
+            <div style="font-size: 14px;">Statistika</div>
+            <div style="font-size: 11px; color: #4ade80;">🔒 Profil tahlili — VIP</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
       </div>
 
-      <div class="form-group">
-        <label>Viloyatingiz:</label>
-        <input type="text" id="p-region" required placeholder="Masalan: Farg'ona">
-      </div>
+    </div>
 
-      <div class="form-group">
-        <label>Kasbingiz / Mashg'ulotingiz:</label>
-        <input type="text" id="p-job" placeholder="Masalan: Dasturchi">
-      </div>
-
-      <div class="form-group">
-        <label>Rasmingizni yuklang:</label>
-        <input type="file" id="p-file" accept="image/*" onchange="uploadImage(event)">
-        <input type="hidden" id="p-photo">
-        <img id="photo-preview-img" class="photo-preview" src="" alt="Rasm">
-      </div>
-
-      <div class="form-group">
-        <label>O'zingiz haqingizda qo'shimcha:</label>
-        <textarea id="p-bio" rows="3" placeholder="Qo'shimcha ma'lumotlar..."></textarea>
-      </div>
-
-      <button type="submit" id="btn-save-profile" class="btn-submit">Anketani saqlash</button>
-    </form>
-  </div>
-
-  <!-- Filter Modal -->
-  <div id="filter-modal" class="modal">
-    <div class="modal-content">
-      <h3 style="margin-bottom: 15px;">Qidiruv filtri</h3>
-      <div class="form-group">
-        <label>Jins bo'yicha:</label>
-        <select id="filter-gender">
-          <option value="Barchasi">Barchasi</option>
-          <option value="Ayol">Ayol (Kelin)</option>
-          <option value="Erkak">Erkak (Kuyov)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Viloyat bo'yicha:</label>
-        <input type="text" id="filter-region" placeholder="Masalan: Toshkent">
-      </div>
-      <div style="display: flex; gap: 10px; margin-top: 15px;">
-        <button class="btn-submit" onclick="applyFilter()" style="margin: 0;">Izlash</button>
-        <button class="btn-submit" onclick="toggleFilterModal(false)" style="margin: 0; background: #666;">Yopish</button>
+    <!-- JAMIYAT -->
+    <div style="font-size: 11px; font-weight: bold; color: #5a7363; letter-spacing: 0.5px; margin-bottom: 8px;">JAMIYAT</div>
+    <div style="background: #14231a; border-radius: 16px; overflow: hidden; margin-bottom: 20px;">
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">💍</span>
+          <div>
+            <div style="font-size: 14px;">Muvaffaqiyat tarixlari</div>
+            <div style="font-size: 11px; color: #6b8273;">Baxtini topganlar — tarixlarni o'qing</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
       </div>
     </div>
+
+    <!-- PROFIL -->
+    <div style="font-size: 11px; font-weight: bold; color: #5a7363; letter-spacing: 0.5px; margin-bottom: 8px;">PROFIL</div>
+    <div style="background: #14231a; border-radius: 16px; overflow: hidden; margin-bottom: 20px;">
+      
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🎬</span>
+          <div>
+            <div style="font-size: 14px;">Video-anketa</div>
+            <div style="font-size: 11px; color: #6b8273;">Savollarga javob bering — video tayyorlaydi</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🎯</span>
+          <div>
+            <div style="font-size: 14px;">Tanishuv talablari</div>
+            <div style="font-size: 11px; color: #6b8273;">Yosh, bo'y, hudud va boshqa mezonlar</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🕌</span>
+          <div>
+            <div style="font-size: 14px;">Qadriyatlar testi</div>
+            <div style="font-size: 11px; color: #6b8273;">5 savol — anketangizda ko'rinadi</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">💍</span>
+          <div>
+            <div style="font-size: 14px;">Juftimni topdim</div>
+            <div style="font-size: 11px; color: #6b8273;">Profilni yakunlash va xabar berish</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+    </div>
+
+    <!-- MAXFIYLIK -->
+    <div style="font-size: 11px; font-weight: bold; color: #5a7363; letter-spacing: 0.5px; margin-bottom: 8px;">MAXFIYLIK</div>
+    <div style="background: #14231a; border-radius: 16px; overflow: hidden; margin-bottom: 20px;">
+      
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🛡️</span>
+          <div>
+            <div style="font-size: 14px;">Xavfsizlik markazi</div>
+            <div style="font-size: 11px; color: #6b8273;">Firibgarlikdan saqlanish va uchrashuv qoidalari</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🙈</span>
+          <div>
+            <div style="font-size: 14px;">Profilni to'xtatish</div>
+            <div style="font-size: 11px; color: #6b8273;">Vaqtincha ko'rinmaslik</div>
+          </div>
+        </div>
+        <input type="checkbox" style="accent-color: #4ade80; transform: scale(1.3);">
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🕵️</span>
+          <div>
+            <div style="font-size: 14px;">Inkognito rejim</div>
+            <div style="font-size: 11px; color: #4ade80;">🔒 Premium imkoniyati</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🔔</span>
+          <div>
+            <div style="font-size: 14px;">Bildirishnomalar</div>
+            <div style="font-size: 11px; color: #6b8273;">Yangi xabar va qiziqishlar</div>
+          </div>
+        </div>
+        <input type="checkbox" checked style="accent-color: #4ade80; transform: scale(1.3);">
+      </div>
+
+    </div>
+
+    <!-- SOZLAMALAR -->
+    <div style="font-size: 11px; font-weight: bold; color: #5a7363; letter-spacing: 0.5px; margin-bottom: 8px;">SOZLAMALAR</div>
+    <div style="background: #14231a; border-radius: 16px; overflow: hidden; margin-bottom: 20px;">
+      
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">⚙️</span>
+          <div style="font-size: 14px;">Umumiy sozlamalar</div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🤖</span>
+          <div>
+            <div style="font-size: 14px;">Yordamchi Bot</div>
+            <div style="font-size: 11px; color: #6b8273;">Darhol javob — 24/7</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">💳</span>
+          <div>
+            <div style="font-size: 14px;">Mening kartalarim</div>
+            <div style="font-size: 11px; color: #6b8273;">Saqlangan kartalar — qo'shish va o'chirish</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🧾</span>
+          <div style="font-size: 14px;">To'lovlar tarixi</div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #1c2e22; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">🚫</span>
+          <div>
+            <div style="font-size: 14px;">Bloklanganlar</div>
+            <div style="font-size: 11px; color: #6b8273;">Bloklagan odamlaringiz — blokdan chiqarish</div>
+          </div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+      <div class="menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 18px;">💌</span>
+          <div style="font-size: 14px;">Admin bilan bog'lanish</div>
+        </div>
+        <span style="color: #4a6353;">&gt;</span>
+      </div>
+
+    </div>
+
+    <!-- AI Himoya Bildirishnomasi -->
+    <div style="background: rgba(40, 68, 51, 0.4); border: 1px solid #203628; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 30px;">
+      <span style="font-size: 18px; color: #4ade80;">🛡️</span>
+      <p style="font-size: 11px; color: #a3b8ab; margin: 0;">Profilingiz AI yuz tekshiruvidan o'tgan. Ma'lumotlaringiz uchinchi tomonga berilmaydi.</p>
+    </div>
+
   </div>
 
-  <!-- Bottom Navigation Menu -->
-  <div class="bottom-nav">
+  <!-- PASTKI NAVIGATSIYA BAR -->
+  <nav class="bottom-nav">
     <div class="nav-item active" onclick="switchTab('katalog', this)">
-      <span class="nav-icon">🧭</span>
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       <span>Katalog</span>
     </div>
     <div class="nav-item" onclick="switchTab('xabarlar', this)">
-      <span class="nav-icon">💬</span>
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
       <span>Xabarlar</span>
     </div>
     <div class="nav-item" onclick="switchTab('saqlangan', this)">
-      <span class="nav-icon">🔖</span>
+      <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
       <span>Saqlangan</span>
     </div>
-    <div class="nav-item" onclick="switchTab('men', this)">
-      <span class="nav-icon">👤</span>
+    <div class="nav-item" onclick="switchTab('profile', this)">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span>Men</span>
     </div>
-  </div>
+  </nav>
 
   <script>
-    // Telegram WebApp initialization
     const tg = window.Telegram ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-    }
+    if (tg) tg.expand();
 
-    const telegramUser = tg?.initDataUnsafe?.user;
-    const telegramId = telegramUser?.id || "123456";
-    let savedCandidates = JSON.parse(localStorage.getItem('saved_candidates') || '[]');
-
-    document.addEventListener("DOMContentLoaded", () => {
-      loadCandidates();
-      loadUserProfile();
-      renderSavedCandidates();
-    });
-
-    // Custom Alert
-    function showAlert(msg) {
-      if (tg && tg.showAlert) {
-        tg.showAlert(msg);
-      } else {
-        alert(msg);
-      }
-    }
-
-    // Tab Switcher
-    function switchTab(tabName, element) {
+    function switchTab(tabId, el) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
 
-      const targetTab = document.getElementById('tab-' + tabName);
-      if (targetTab) targetTab.classList.add('active');
-      if (element) element.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+      if (el) el.classList.add('active');
+
+      if (tabId === 'katalog') loadCatalog();
+      if (tabId === 'profile') loadUserProfile();
     }
 
-    // Nomzodlarni yuklash
-    async function loadCandidates(gender = 'Barchasi', region = '') {
-      const container = document.getElementById('candidates-list');
-      container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 30px;">Yuklanmoqda...</p>';
-
-      try {
-        const res = await fetch(`/api/users?gender=${encodeURIComponent(gender)}&region=${encodeURIComponent(region)}`);
-        const data = await res.json();
-
-        if (data.success && data.users.length > 0) {
-          container.innerHTML = data.users.map(u => renderUserCard(u)).join('');
-        } else {
-          container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 30px;">Hozircha hech qanday tasdiqlangan nomzod topilmadi.</p>';
-        }
-      } catch (err) {
-        container.innerHTML = '<p style="text-align: center; color: red; margin-top: 30px;">Ma\'lumotlarni yuklashda xatolik yuz berdi.</p>';
-      }
-    }
-
-    // Kartochka HTML
-    function renderUserCard(u) {
-      const defaultImg = "https://via.placeholder.com/300x200?text=Rasm+Yo%27q";
-      const isSaved = savedCandidates.some(item => item.telegramId === u.telegramId);
-
-      return `
-        <div class="user-card ${u.isVip ? 'vip' : ''}">
-          <img src="${u.photoUrl || defaultImg}" class="card-img" alt="${u.name}" onerror="this.src='${defaultImg}'">
-          <div class="card-header">
-            <span class="name">${u.name}, ${u.age} yosh</span>
-            <span class="tag">${u.gender}</span>
-          </div>
-          <div class="info">📍 <b>Viloyat:</b> ${u.region}</div>
-          <div class="info">💼 <b>Kasbi:</b> ${u.job || 'Ko\'rsatilmagan'}</div>
-          ${u.bio ? `<div class="bio">"${u.bio}"</div>` : ''}
-          
-          <div class="card-actions">
-            <button class="btn-action btn-contact" onclick="openContact('${u.telegramId}')">Bog'lanish 💬</button>
-            <button class="btn-action btn-save" onclick="toggleSave('${u.telegramId}', '${u.name}', '${u.age}', '${u.region}')">
-              ${isSaved ? 'O\'chirish 🗑️' : 'Saqlash 🔖'}
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Rasm yuklash
-    async function uploadImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const formData = new FormData();
-      formData.append('photo', file);
-
-      const btn = document.getElementById('btn-save-profile');
-      btn.disabled = true;
-      btn.innerText = "Rasm yuklanmoqda...";
-
-      try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
-
-        if (data.success) {
-          document.getElementById('p-photo').value = data.photoUrl;
-          const imgPreview = document.getElementById('photo-preview-img');
-          imgPreview.src = data.photoUrl;
-          imgPreview.style.display = 'block';
-          showAlert("Rasm muvaffaqiyatli yuklandi!");
-        } else {
-          showAlert("Rasm yuklashda xatolik!");
-        }
-      } catch (err) {
-        showAlert("Serverga ulanishda xatolik!");
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "Anketani saqlash";
-      }
-    }
-
-    // Telegram profiliga o'tish
-    function openContact(id) {
-      if (tg && tg.openTelegramLink) {
-        tg.openTelegramLink(`https://t.me/user?id=${id}`);
-      } else {
-        window.open(`https://t.me/user?id=${id}`, '_blank');
-      }
-    }
-
-    // Saqlanganlar
-    function toggleSave(id, name, age, region) {
-      const idx = savedCandidates.findIndex(item => item.telegramId === id);
-      if (idx > -1) {
-        savedCandidates.splice(idx, 1);
-        showAlert("Nomzod saqlanganlardan o'chirildi");
-      } else {
-        savedCandidates.push({ telegramId: id, name, age, region });
-        showAlert("Nomzod saqlanganlarga qo'shildi!");
-      }
-      localStorage.setItem('saved_candidates', JSON.stringify(savedCandidates));
-      loadCandidates();
-      renderSavedCandidates();
-    }
-
-    function renderSavedCandidates() {
-      const container = document.getElementById('saved-list');
-      if (savedCandidates.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 20px;">Saqlangan nomzodlar ro\'yxati bo\'sh</p>';
-        return;
-      }
-      container.innerHTML = savedCandidates.map(u => `
-        <div class="user-card">
-          <div class="card-header">
-            <span class="name">${u.name}, ${u.age} yosh</span>
-          </div>
-          <div class="info">📍 <b>Viloyat:</b> ${u.region}</div>
-          <div class="card-actions">
-            <button class="btn-action btn-contact" onclick="openContact('${u.telegramId}')">Bog'lanish 💬</button>
-            <button class="btn-action btn-save" onclick="toggleSave('${u.telegramId}')">O'chirish 🗑️</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // Profilni serverdan olish
     async function loadUserProfile() {
+      const telegramId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : '123456';
       try {
         const res = await fetch(`/api/user/${telegramId}`);
         const data = await res.json();
         if (data.success && data.user) {
-          document.getElementById('p-name').value = data.user.name || '';
-          document.getElementById('p-age').value = data.user.age || '';
-          document.getElementById('p-gender').value = data.user.gender || 'Erkak';
-          document.getElementById('p-region').value = data.user.region || '';
-          document.getElementById('p-job').value = data.user.job || '';
-          document.getElementById('p-photo').value = data.user.photoUrl || '';
-          document.getElementById('p-bio').value = data.user.bio || '';
-
+          document.getElementById('user-name-age').innerText = `${data.user.name || 'Foydalanuvchi'}, ${data.user.age || ''}`;
+          document.getElementById('user-region').innerText = `📍 ${data.user.region || 'Viloyat ko\'rsatilmadi'}`;
           if (data.user.photoUrl) {
-            const imgPreview = document.getElementById('photo-preview-img');
-            imgPreview.src = data.user.photoUrl;
-            imgPreview.style.display = 'block';
+            document.getElementById('user-avatar').src = data.user.photoUrl;
           }
-        } else if (telegramUser) {
-          document.getElementById('p-name').value = telegramUser.first_name || '';
-        }
-      } catch (err) { console.error(err); }
-    }
-
-    // Profilni saqlash
-    async function saveProfile(e) {
-      e.preventDefault();
-
-      const bodyData = {
-        telegramId,
-        name: document.getElementById('p-name').value,
-        age: document.getElementById('p-age').value,
-        gender: document.getElementById('p-gender').value,
-        region: document.getElementById('p-region').value,
-        job: document.getElementById('p-job').value,
-        photoUrl: document.getElementById('p-photo').value,
-        bio: document.getElementById('p-bio').value,
-      };
-
-      try {
-        const res = await fetch('/api/user/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bodyData)
-        });
-        const data = await res.json();
-        if(data.success) {
-          showAlert("Anketangiz moderatsiyaga yuborildi! Admin tasdiqlashini kuting.");
-        } else {
-          showAlert("Xatolik yuz berdi!");
         }
       } catch (err) {
-        showAlert("Server bilan ulanishda xatolik!");
+        console.error(err);
       }
     }
 
-    // Modals va Bannerlar
-    function toggleFilterModal(show) { document.getElementById('filter-modal').style.display = show ? 'flex' : 'none'; }
-    function applyFilter() {
-      const gender = document.getElementById('filter-gender').value;
-      const region = document.getElementById('filter-region').value;
-      toggleFilterModal(false);
-      loadCandidates(gender, region);
+    async function loadCatalog() {
+      try {
+        const res = await fetch('/api/users');
+        const data = await res.json();
+        const container = document.getElementById('catalog-list');
+        if (data.success && data.users.length > 0) {
+          container.innerHTML = data.users.map(u => `
+            <div style="background: #14231a; border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;">
+              <img src="${u.photoUrl || 'https://via.placeholder.com/60'}" style="width: 60px; height: 60px; border-radius: 10px; object-fit: cover;">
+              <div>
+                <h4 style="margin:0; font-size: 16px;">${u.name}, ${u.age}</h4>
+                <p style="margin: 4px 0 0 0; font-size: 12px; color: #8ea195;">📍 ${u.region}</p>
+                <p style="margin: 2px 0 0 0; font-size: 11px; color: #4ade80;">Kasbi: ${u.job || '-'}</p>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = '<p style="color: #6b8273; text-align: center; margin-top: 40px;">Hozircha tasdiqlangan nomzodlar yo\'q</p>';
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
-    function openNotifications() { showAlert("Yangi bildirishnomalar mavjud emas"); }
-    function openVipPage() { showAlert("VIP xizmati tez kunda ishga tushadi!"); }
+
+    // Dastlabki yuklanish
+    loadCatalog();
   </script>
 </body>
 </html>
