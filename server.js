@@ -56,20 +56,28 @@ bot.start((ctx) => {
 
 // Moderatsiya tugmalarini eshitish (Approve / Reject)
 bot.action(/approve_(.+)/, async (ctx) => {
-  const userId = ctx.match[1];
-  await User.findByIdAndUpdate(userId, { isApproved: true });
-  await ctx.answerCbQuery("Anketa tasdiqlandi!");
-  await ctx.editMessageText(ctx.callbackQuery.message.text + "\n\n✅ <b>STATUS: Tasdiqlandi</b>", { parse_mode: 'HTML' });
+  try {
+    const userId = ctx.match[1];
+    await User.findByIdAndUpdate(userId, { isApproved: true });
+    await ctx.answerCbQuery("Anketa tasdiqlandi!");
+    await ctx.editMessageText(ctx.callbackQuery.message.text + "\n\n✅ <b>STATUS: Tasdiqlandi</b>", { parse_mode: 'HTML' });
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 bot.action(/reject_(.+)/, async (ctx) => {
-  const userId = ctx.match[1];
-  await User.findByIdAndDelete(userId);
-  await ctx.answerCbQuery("Anketa rad etildi!");
-  await ctx.editMessageText(ctx.callbackQuery.message.text + "\n\n❌ <b>STATUS: Rad etildi va o'chirildi</b>", { parse_mode: 'HTML' });
+  try {
+    const userId = ctx.match[1];
+    await User.findByIdAndDelete(userId);
+    await ctx.answerCbQuery("Anketa rad etildi!");
+    await ctx.editMessageText(ctx.callbackQuery.message.text + "\n\n❌ <b>STATUS: Rad etildi va o'chirildi</b>", { parse_mode: 'HTML' });
+  } catch (e) {
+    console.error(e);
+  }
 });
 
-bot.launch();
+bot.launch().catch(err => console.error("Bot launch error:", err));
 
 // --- API ROUTES ---
 
@@ -131,7 +139,7 @@ app.post('/api/user/save', async (req, res) => {
 
     res.json({ success: true, message: "Anketa saqlandi va adminga yuborildi" });
   } catch (err) {
-    console.error(err);
+    console.error("Save Error:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
@@ -140,12 +148,12 @@ app.post('/api/user/save', async (req, res) => {
 app.get('/api/users', async (req, res) => {
   try {
     const { gender, region } = req.query;
-    let query = { isApproved: true };
+    let filter = { isApproved: true };
 
-    if (gender && gender !== 'Barchasi') query.gender = gender;
-    if (region) query.region = new RegExp(region, 'i');
+    if (gender && gender !== 'Barchasi') filter.gender = gender;
+    if (region) filter.region = new RegExp(region, 'i');
 
-    const users = await User.find(query).sort({ isVip: -1, createdAt: -1 });
+    const users = await User.find(filter).sort({ isVip: -1, createdAt: -1 });
     res.json({ success: true, users });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
