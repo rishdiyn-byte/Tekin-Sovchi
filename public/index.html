@@ -66,14 +66,6 @@
       fill: currentColor;
     }
 
-    .menu-item {
-      transition: background 0.2s;
-    }
-
-    .menu-item:active {
-      background: #1c2e22;
-    }
-
     /* Gorizontal scroll bar shakli */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -89,16 +81,16 @@
   <!-- 1-TAB: KATALOG -->
   <div id="tab-katalog" class="tab-content active" style="padding: 12px 16px;">
     
-    <!-- 1. HEADER (TASKIN LOGO + BUTTONS) -->
+    <!-- HEADER (TASKIN LOGO + BUTTONS) -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="color: #4ade80; font-size: 20px;">🖤</span>
-        <span style="font-size: 22px; font-weight: bold; tracking-tight: -0.5px;">taskin</span>
+        <span style="font-size: 22px; font-weight: bold; letter-spacing: -0.5px;">taskin</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <div style="background: #14231a; border: 1px solid #203628; border-radius: 20px; padding: 4px 8px; display: flex; gap: 6px; align-items: center;">
           <span style="font-size: 14px; opacity: 0.5;">🔳</span>
-          <span style="font-size: 14px; opacity: 0.5;">equiv</span>
+          <span style="font-size: 14px; opacity: 0.5;">≡</span>
           <span style="font-size: 14px;">🎛️</span>
         </div>
         <div style="background: #14231a; border: 1px solid #203628; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
@@ -107,20 +99,20 @@
       </div>
     </div>
 
-    <!-- 2. FILTR TUGMALARI (SCROLLABLE BAR) -->
+    <!-- FILTR TUGMALARI -->
     <div class="no-scrollbar" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 4px;">
-      <button onclick="openFilterModal()" style="background: #14231a; border: 1px solid #203628; color: #4ade80; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px;">
+      <button style="background: #14231a; border: 1px solid #203628; color: #4ade80; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px;">
         🎛️ Filtr <span style="background: rgba(74, 222, 128, 0.2); padding: 1px 6px; border-radius: 10px; font-size: 11px;">9</span>
       </button>
       <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap;">
         ⇅ Eng mos
       </button>
-      <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap; display: flex; align-items: center; gap: 4px;">
+      <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap;">
         ⭐ Mening qidiruvim
       </button>
     </div>
 
-    <!-- 3. AI SO'ROV BANERI -->
+    <!-- AI SO'ROV BANERI -->
     <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
       <p style="font-size: 13px; color: #a3b8ab; margin-bottom: 12px; text-align: center; line-height: 1.4;">
         Talablarni biroz yengillashtirsangiz, ko'proq nomzod ochiladi.
@@ -135,7 +127,7 @@
       </div>
     </div>
 
-    <!-- 4. VIP NOMZODLAR BO'LIMI -->
+    <!-- VIP NOMZODLAR BO'LIMI -->
     <div style="background: #14231a; border: 1px solid #283e30; border-radius: 20px; padding: 16px; margin-bottom: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <div>
@@ -150,44 +142,37 @@
 
       <!-- VIP Kartochkalar (Horizontal Scroll) -->
       <div id="vip-candidates-list" class="no-scrollbar" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px;">
-        
-        <!-- Yuklanish holati uchun namunalar -->
         <div style="min-width: 145px; width: 145px; height: 195px; border: 1.5px solid #d97706; border-radius: 16px; position: relative; overflow: hidden; background: #1c2b22; flex-shrink: 0;">
-          <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px; display: flex; align-items: center; gap: 3px;">
+          <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">
             👑 VIP
           </div>
-          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 15px; font-size: 11px; display: flex; align-items: center; gap: 4px;">
+          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 15px; font-size: 11px;">
             🔒 Xira
           </div>
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9));">
-            <div style="font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 4px;">
-              Dilёra, 28 <span style="color: #3b82f6; font-size: 10px;">✔</span>
-            </div>
-            <div style="font-size: 11px; color: #a3b8ab; margin-top: 2px;">Toshkent shahri</div>
+            <div style="font-size: 14px; font-weight: bold;">Dilёra, 28 <span style="color: #3b82f6;">✔</span></div>
+            <div style="font-size: 11px; color: #a3b8ab;">Toshkent shahri</div>
             <div style="font-size: 10px; color: #34d399; margin-top: 4px; font-weight: 600;">50% moslik</div>
           </div>
         </div>
 
         <div style="min-width: 145px; width: 145px; height: 195px; border: 1.5px solid #d97706; border-radius: 16px; position: relative; overflow: hidden; background: #1c2b22; flex-shrink: 0;">
-          <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px; display: flex; align-items: center; gap: 3px;">
+          <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">
             👑 VIP
           </div>
-          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 15px; font-size: 11px; display: flex; align-items: center; gap: 4px;">
+          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 15px; font-size: 11px;">
             🔒 Xira
           </div>
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9));">
-            <div style="font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 4px;">
-              Shodiya, 26 <span style="color: #3b82f6; font-size: 10px;">✔</span>
-            </div>
-            <div style="font-size: 11px; color: #a3b8ab; margin-top: 2px;">Toshkent shahri</div>
+            <div style="font-size: 14px; font-weight: bold;">Shodiya, 26 <span style="color: #3b82f6;">✔</span></div>
+            <div style="font-size: 11px; color: #a3b8ab;">Toshkent shahri</div>
             <div style="font-size: 10px; color: #34d399; margin-top: 4px; font-weight: 600;">50% moslik</div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- 5. INSTAGRAM BANERI -->
+    <!-- BANERLAR -->
     <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <span style="font-size: 20px;">🎬</span>
@@ -199,7 +184,6 @@
       <span style="color: #6b8273;">&gt;</span>
     </div>
 
-    <!-- 6. KUNLIK TAVSIYA BANERI -->
     <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <span style="font-size: 20px;">💫</span>
@@ -208,9 +192,9 @@
       <span style="color: #6b8273;">&gt;</span>
     </div>
 
-    <!-- 7. ODDIY KATALOG RO'YXATI -->
+    <!-- ODDIY KATALOG RO'YXATI -->
     <div id="catalog-list" style="display: flex; flex-direction: column; gap: 12px;">
-      <!-- JavaScript orqali to'ldiriladi -->
+      <!-- JS orqali to'ldiriladi -->
     </div>
 
   </div>
@@ -233,20 +217,68 @@
     </div>
   </div>
 
-  <!-- 4-TAB: MEN (PROFIL) -->
+  <!-- 4-TAB: MEN (PROFIL VA ANKETA) -->
   <div id="tab-profile" class="tab-content" style="padding: 16px;">
     <!-- Profil kartochkasi -->
-    <div style="background: #14231a; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+    <div style="background: #14231a; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
       <div style="display: flex; align-items: center; justify-content: space-between;">
         <div style="display: flex; align-items: center; gap: 12px;">
           <img id="user-avatar" src="https://via.placeholder.com/60" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover;">
           <div>
             <h3 id="user-name-age" style="margin: 0; font-size: 18px; font-weight: bold;">Foydalanuvchi</h3>
-            <p id="user-region" style="margin: 4px 0 0 0; font-size: 13px; color: #8ea195;">📍 Viloyat</p>
+            <p id="user-region" style="margin: 4px 0 0 0; font-size: 13px; color: #8ea195;">📍 Viloyat ko'rsatilmadi</p>
           </div>
         </div>
-        <button style="background: rgba(255,255,255,0.08); border: 1px solid #284433; color: #4ade80; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer;">Tahrirlash</button>
       </div>
+    </div>
+
+    <!-- ANKETA TO'LDIRISH FORMASI -->
+    <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 16px;">
+      <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 16px; color: #4ade80;">Anketa ma'lumotlari</h3>
+      
+      <form id="profileForm" onsubmit="saveProfile(event)">
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Ismingiz:</label>
+          <input type="text" id="inputName" required style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Yoshingiz:</label>
+          <input type="number" id="inputAge" required style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Jinsingiz:</label>
+          <select id="inputGender" style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
+            <option value="Erkak">Erkak</option>
+            <option value="Ayol">Ayol</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Viloyatingiz:</label>
+          <input type="text" id="inputRegion" placeholder="Masalan: Farg'ona" required style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Kasbingiz / Mashg'ulotingiz:</label>
+          <input type="text" id="inputJob" style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Rasm yuklang:</label>
+          <input type="file" id="inputPhoto" accept="image/*" style="width: 100%; color: #8ea195; font-size: 13px;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">O'zingiz haqingizda qo'shimcha:</label>
+          <textarea id="inputBio" rows="3" style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;"></textarea>
+        </div>
+
+        <button type="submit" style="width: 100%; background: #34d399; color: #0b140f; font-weight: bold; border: none; padding: 12px; border-radius: 10px; font-size: 15px; cursor: pointer;">
+          💾 Anketani Saqlash
+        </button>
+      </form>
     </div>
   </div>
 
@@ -265,7 +297,7 @@
       <span>Saqlangan</span>
     </div>
     <div class="nav-item" onclick="switchTab('profile', this)">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span>Men</span>
     </div>
   </nav>
@@ -296,9 +328,54 @@
           if (data.user.photoUrl) {
             document.getElementById('user-avatar').src = data.user.photoUrl;
           }
+
+          document.getElementById('inputName').value = data.user.name || '';
+          document.getElementById('inputAge').value = data.user.age || '';
+          document.getElementById('inputGender').value = data.user.gender || 'Erkak';
+          document.getElementById('inputRegion').value = data.user.region || '';
+          document.getElementById('inputJob').value = data.user.job || '';
+          document.getElementById('inputBio').value = data.user.bio || '';
         }
       } catch (err) {
         console.error(err);
+      }
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      const telegramId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : '123456';
+      
+      let photoUrl = '';
+      const fileInput = document.getElementById('inputPhoto');
+      if (fileInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append('photo', fileInput.files[0]);
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) photoUrl = uploadData.photoUrl;
+      }
+
+      const payload = {
+        telegramId,
+        name: document.getElementById('inputName').value,
+        age: document.getElementById('inputAge').value,
+        gender: document.getElementById('inputGender').value,
+        region: document.getElementById('inputRegion').value,
+        job: document.getElementById('inputJob').value,
+        bio: document.getElementById('inputBio').value,
+        photoUrl: photoUrl || undefined
+      };
+
+      const res = await fetch('/api/user/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        alert("Anketa muvaffaqiyatli saqlandi va admin tasdig'iga yuborildi!");
+        loadUserProfile();
       }
     }
 
@@ -310,12 +387,11 @@
         const vipContainer = document.getElementById('vip-candidates-list');
 
         if (data.success && data.users.length > 0) {
-          // VIP foydalanuvchilarni ajratib olish
           const vipUsers = data.users.filter(u => u.isVip);
           if (vipUsers.length > 0) {
             vipContainer.innerHTML = vipUsers.map(u => `
               <div style="min-width: 145px; width: 145px; height: 195px; border: 1.5px solid #d97706; border-radius: 16px; position: relative; overflow: hidden; background: url('${u.photoUrl || 'https://via.placeholder.com/150'}') center/cover; flex-shrink: 0;">
-                <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px; display: flex; align-items: center; gap: 3px;">
+                <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">
                   👑 VIP
                 </div>
                 <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9));">
@@ -327,7 +403,6 @@
             `).join('');
           }
 
-          // Oddiy katalog ro'yxati
           container.innerHTML = data.users.map(u => `
             <div style="background: #14231a; border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;">
               <img src="${u.photoUrl || 'https://via.placeholder.com/60'}" style="width: 60px; height: 60px; border-radius: 10px; object-fit: cover;">
@@ -344,7 +419,6 @@
       }
     }
 
-    // Dastlabki yuklanish
     loadCatalog();
   </script>
 </body>
