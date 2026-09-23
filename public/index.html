@@ -17,7 +17,7 @@
     body {
       background-color: #0b140f;
       color: #ffffff;
-      padding-bottom: 75px;
+      padding-bottom: 80px;
     }
 
     .tab-content {
@@ -28,7 +28,7 @@
       display: block;
     }
 
-    /* Pastki menyu navbars */
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -66,7 +66,6 @@
       fill: currentColor;
     }
 
-    /* Gorizontal scroll bar shakli */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -74,18 +73,104 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* Menu list elementlari uchun stil */
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      cursor: pointer;
+    }
+
+    .menu-item:not(:last-child) {
+      border-bottom: 1px solid #1a2e22;
+    }
+
+    .menu-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .menu-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .menu-sub {
+      font-size: 11px;
+      color: #6b8273;
+      margin-top: 2px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #6b8273;
+      letter-spacing: 0.5px;
+      margin: 18px 4px 8px 4px;
+    }
+
+    /* Switcher Toggle */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #24382c;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #34d399;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
   </style>
 </head>
 <body>
 
   <!-- 1-TAB: KATALOG -->
   <div id="tab-katalog" class="tab-content active" style="padding: 12px 16px;">
-    
-    <!-- HEADER (TASKIN LOGO + BUTTONS) -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="color: #4ade80; font-size: 20px;">🖤</span>
-        <span style="font-size: 22px; font-weight: bold; letter-spacing: -0.5px;">taskin</span>
+        <span style="font-size: 22px; font-weight: bold; letter-spacing: -0.5px;">tekin sovchi</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
         <div style="background: #14231a; border: 1px solid #203628; border-radius: 20px; padding: 4px 8px; display: flex; gap: 6px; align-items: center;">
@@ -101,102 +186,13 @@
 
     <!-- FILTR TUGMALARI -->
     <div class="no-scrollbar" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 4px;">
-      <button style="background: #14231a; border: 1px solid #203628; color: #4ade80; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 6px;">
-        🎛️ Filtr <span style="background: rgba(74, 222, 128, 0.2); padding: 1px 6px; border-radius: 10px; font-size: 11px;">9</span>
-      </button>
-      <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap;">
-        ⇅ Eng mos
-      </button>
-      <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap;">
-        ⭐ Mening qidiruvim
-      </button>
+      <button style="background: #14231a; border: 1px solid #203628; color: #4ade80; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; white-space: nowrap;">🎛️ Filtr</button>
+      <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap;">⇅ Eng mos</button>
+      <button style="background: #14231a; border: 1px solid #203628; color: #d1dcd5; padding: 8px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap;">⭐ Mening qidiruvim</button>
     </div>
 
-    <!-- AI SO'ROV BANERI -->
-    <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
-      <p style="font-size: 13px; color: #a3b8ab; margin-bottom: 12px; text-align: center; line-height: 1.4;">
-        Talablarni biroz yengillashtirsangiz, ko'proq nomzod ochiladi.
-      </p>
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <button style="flex: 1; background: #34d399; color: #0b140f; border: none; padding: 10px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer;">
-          Ha, ko'rib chiqaman
-        </button>
-        <button style="background: transparent; border: none; color: #8ea195; padding: 10px 14px; font-size: 13px; cursor: pointer;">
-          Yo'q
-        </button>
-      </div>
-    </div>
-
-    <!-- VIP NOMZODLAR BO'LIMI -->
-    <div style="background: #14231a; border: 1px solid #283e30; border-radius: 20px; padding: 16px; margin-bottom: 16px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="font-size: 16px;">👑</span>
-            <span style="font-size: 15px; font-weight: bold;">VIP nomzodlar</span>
-          </div>
-          <div style="font-size: 11px; color: #6b8273; margin-top: 2px;">Alohida doskada — hammaga ko'rinadi</div>
-        </div>
-        <span style="color: #f59e0b; font-size: 13px; font-weight: bold; cursor: pointer;">Hammasi &gt;</span>
-      </div>
-
-      <!-- VIP Kartochkalar (Horizontal Scroll) -->
-      <div id="vip-candidates-list" class="no-scrollbar" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px;">
-        <div style="min-width: 145px; width: 145px; height: 195px; border: 1.5px solid #d97706; border-radius: 16px; position: relative; overflow: hidden; background: #1c2b22; flex-shrink: 0;">
-          <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">
-            👑 VIP
-          </div>
-          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 15px; font-size: 11px;">
-            🔒 Xira
-          </div>
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9));">
-            <div style="font-size: 14px; font-weight: bold;">Dilёra, 28 <span style="color: #3b82f6;">✔</span></div>
-            <div style="font-size: 11px; color: #a3b8ab;">Toshkent shahri</div>
-            <div style="font-size: 10px; color: #34d399; margin-top: 4px; font-weight: 600;">50% moslik</div>
-          </div>
-        </div>
-
-        <div style="min-width: 145px; width: 145px; height: 195px; border: 1.5px solid #d97706; border-radius: 16px; position: relative; overflow: hidden; background: #1c2b22; flex-shrink: 0;">
-          <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">
-            👑 VIP
-          </div>
-          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 15px; font-size: 11px;">
-            🔒 Xira
-          </div>
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9));">
-            <div style="font-size: 14px; font-weight: bold;">Shodiya, 26 <span style="color: #3b82f6;">✔</span></div>
-            <div style="font-size: 11px; color: #a3b8ab;">Toshkent shahri</div>
-            <div style="font-size: 10px; color: #34d399; margin-top: 4px; font-weight: 600;">50% moslik</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BANERLAR -->
-    <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 20px;">🎬</span>
-        <div>
-          <div style="font-size: 13px; font-weight: bold;">Instagram sahifamizda chiqing 🎬</div>
-          <div style="font-size: 11px; color: #8ea195; margin-top: 2px;">Anketangizdan video qilamiz</div>
-        </div>
-      </div>
-      <span style="color: #6b8273;">&gt;</span>
-    </div>
-
-    <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 20px;">💫</span>
-        <div style="font-size: 13px; font-weight: bold;">Kunlik tavsiya</div>
-      </div>
-      <span style="color: #6b8273;">&gt;</span>
-    </div>
-
-    <!-- ODDIY KATALOG RO'YXATI -->
-    <div id="catalog-list" style="display: flex; flex-direction: column; gap: 12px;">
-      <!-- JS orqali to'ldiriladi -->
-    </div>
-
+    <!-- CATALOG LIST -->
+    <div id="catalog-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
   </div>
 
   <!-- 2-TAB: XABARLAR -->
@@ -217,69 +213,285 @@
     </div>
   </div>
 
-  <!-- 4-TAB: MEN (PROFIL VA ANKETA) -->
-  <div id="tab-profile" class="tab-content" style="padding: 16px;">
-    <!-- Profil kartochkasi -->
-    <div style="background: #14231a; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
-      <div style="display: flex; align-items: center; justify-content: space-between;">
+  <!-- 4-TAB: MEN (PROFIL) -->
+  <div id="tab-profile" class="tab-content" style="padding: 12px 16px;">
+    
+    <!-- 1. ASOSIY PROFIL KARTASI -->
+    <div style="background: #122118; border: 1px solid #1c3023; border-radius: 20px; padding: 16px; margin-bottom: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <img id="user-avatar" src="https://via.placeholder.com/60" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover;">
+          <img id="user-avatar" src="https://via.placeholder.com/60" style="width: 58px; height: 58px; border-radius: 14px; object-fit: cover;">
           <div>
-            <h3 id="user-name-age" style="margin: 0; font-size: 18px; font-weight: bold;">Foydalanuvchi</h3>
-            <p id="user-region" style="margin: 4px 0 0 0; font-size: 13px; color: #8ea195;">📍 Viloyat ko'rsatilmadi</p>
+            <h3 id="user-name-age" style="margin: 0; font-size: 18px; font-weight: bold;">Skofild, 25</h3>
+            <p id="user-region" style="margin: 3px 0 0 0; font-size: 12px; color: #6b8273;">📍 Sirdaryo viloyati</p>
           </div>
         </div>
+        <button style="background: #182e21; border: 1px solid #284432; color: #34d399; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer;">Tahrirlash</button>
+      </div>
+
+      <!-- Profil to'ldirilganlik darajasi -->
+      <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+        <span style="color: #8ea195;">Profil to'ldirilgani</span>
+        <span style="color: #34d399; font-weight: bold;">91% &gt;</span>
+      </div>
+      <div style="width: 100%; height: 6px; background: #1c3023; border-radius: 4px; overflow: hidden; margin-bottom: 14px;">
+        <div style="width: 91%; height: 100%; background: #34d399;"></div>
+      </div>
+
+      <!-- Sovg'a baneri -->
+      <div style="background: #172a1f; border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">🎁</span>
+          <span style="font-size: 11px; color: #a3b8ab;">100% to'ldirsangiz — <b>1 bepul suhbat</b> sovg'a</span>
+        </div>
+        <span style="font-size: 11px; color: #34d399; font-weight: bold; cursor: pointer;">To'ldirish &rarr;</span>
+      </div>
+
+      <div style="font-size: 11px; color: #6b8273; line-height: 1.3; margin-bottom: 12px;">
+        To'liq profil katalogda yuqoriroq chiqadi va ko'proq javob oladi.
+      </div>
+
+      <!-- AI Maslahati -->
+      <div style="border-top: 1px solid #1c3023; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span>🪄</span>
+          <div>
+            <div style="font-size: 12px; font-weight: bold;">AI maslahati</div>
+            <div style="font-size: 10px; color: #6b8273;">Profilingizni kuchaytirish bo'yicha 2 tavsiya</div>
+          </div>
+        </div>
+        <span style="color: #6b8273; font-size: 12px;">&gt;</span>
       </div>
     </div>
 
-    <!-- ANKETA TO'LDIRISH FORMASI -->
-    <div style="background: #14231a; border: 1px solid #203628; border-radius: 16px; padding: 16px;">
-      <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 16px; color: #4ade80;">Anketa ma'lumotlari</h3>
-      
-      <form id="profileForm" onsubmit="saveProfile(event)">
-        <div style="margin-bottom: 12px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Ismingiz:</label>
-          <input type="text" id="inputName" required style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Yoshingiz:</label>
-          <input type="number" id="inputAge" required style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Jinsingiz:</label>
-          <select id="inputGender" style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
-            <option value="Erkak">Erkak</option>
-            <option value="Ayol">Ayol</option>
-          </select>
-        </div>
-
-        <div style="margin-bottom: 12px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Viloyatingiz:</label>
-          <input type="text" id="inputRegion" placeholder="Masalan: Farg'ona" required style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Kasbingiz / Mashg'ulotingiz:</label>
-          <input type="text" id="inputJob" style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">Rasm yuklang:</label>
-          <input type="file" id="inputPhoto" accept="image/*" style="width: 100%; color: #8ea195; font-size: 13px;">
-        </div>
-
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; font-size: 12px; color: #8ea195; margin-bottom: 4px;">O'zingiz haqingizda qo'shimcha:</label>
-          <textarea id="inputBio" rows="3" style="width: 100%; background: #0b140f; border: 1px solid #203628; color: #fff; padding: 10px; border-radius: 8px; font-size: 14px;"></textarea>
-        </div>
-
-        <button type="submit" style="width: 100%; background: #34d399; color: #0b140f; font-weight: bold; border: none; padding: 12px; border-radius: 10px; font-size: 15px; cursor: pointer;">
-          💾 Anketani Saqlash
-        </button>
-      </form>
+    <!-- 2. PREMIUM BANER -->
+    <div style="background: linear-gradient(135deg, #0f3822 0%, #0d281a 100%); border: 1px solid #1f4d32; border-radius: 20px; padding: 16px; margin-bottom: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+        <span style="font-size: 24px;">👀</span>
+        <span style="font-size: 16px; font-weight: bold;">2 kishi profilingizni ko'rdi</span>
+      </div>
+      <p style="font-size: 12px; color: #a3b8ab; margin-bottom: 14px;">Kim ekanini biling va katalogda yuqorida chiqing.</p>
+      <button style="width: 100%; background: #ffffff; color: #0b140f; border: none; padding: 12px; border-radius: 25px; font-weight: bold; font-size: 13px; cursor: pointer;">
+        Premium olish — 129 000 so'm/oy
+      </button>
     </div>
+
+    <!-- 3. TARIF VA IMKONIYATLAR -->
+    <div class="section-label">TARIF VA IMKONIYATLAR</div>
+    <div style="background: #122118; border: 1px solid #1c3023; border-radius: 16px; overflow: hidden; margin-bottom: 12px;">
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">👀</span>
+          <div>
+            <div class="menu-title">Kim sizni ko'rdi</div>
+            <div class="menu-sub" style="color: #34d399;">🔒 2 kishi · kim ekanini ko'rish</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">💚</span>
+          <div>
+            <div class="menu-title">Kim sizni saqladi</div>
+            <div class="menu-sub">🔒 Hali saqlanmagan</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">📊</span>
+          <div>
+            <div class="menu-title">Statistika</div>
+            <div class="menu-sub">🔒 Profil tahlili — VIP</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+    </div>
+
+    <!-- 4. JAMIYAT -->
+    <div class="section-label">JAMIYAT</div>
+    <div style="background: #122118; border: 1px solid #1c3023; border-radius: 16px; overflow: hidden; margin-bottom: 12px;">
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">💍</span>
+          <div>
+            <div class="menu-title">Muvaffaqiyat tarixlari</div>
+            <div class="menu-sub">Tekin Sovchi orqali baxtini topganlar — tarixlarni o'qing</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+    </div>
+
+    <!-- 5. PROFIL -->
+    <div class="section-label">PROFIL</div>
+    <div style="background: #122118; border: 1px solid #1c3023; border-radius: 16px; overflow: hidden; margin-bottom: 12px;">
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🎬</span>
+          <div>
+            <div class="menu-title">Video-anketa</div>
+            <div class="menu-sub">Savollarga javob bering — jamoamiz video tayyorlaydi</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🎯</span>
+          <div>
+            <div class="menu-title">Tanishuv talablari</div>
+            <div class="menu-sub">Yosh, bo'y, hudud va boshqa mezonlar</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🕌</span>
+          <div>
+            <div class="menu-title">Qadriyatlar testi</div>
+            <div class="menu-sub">5 savol — javoblaringiz anketangizda ko'rinadi</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">💍</span>
+          <div>
+            <div class="menu-title">Juftimni topdim</div>
+            <div class="menu-sub">Profilni yakunlash va xabar berish</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+    </div>
+
+    <!-- 6. MAXFIYLIK -->
+    <div class="section-label">MAXFIYLIK</div>
+    <div style="background: #122118; border: 1px solid #1c3023; border-radius: 16px; overflow: hidden; margin-bottom: 12px;">
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🛡️</span>
+          <div>
+            <div class="menu-title">Xavfsizlik markazi</div>
+            <div class="menu-sub">Firibgarlikdan saqlanish va uchrashuv qoidalari</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🙈</span>
+          <div>
+            <div class="menu-title">Profilni to'xtatish</div>
+            <div class="menu-sub">Vaqtincha ko'rinmaslik</div>
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🕵️</span>
+          <div>
+            <div class="menu-title">Inkognito rejim</div>
+            <div class="menu-sub">🔒 Premium imkoniyati</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🔔</span>
+          <div>
+            <div class="menu-title">Bildirishnomalar</div>
+            <div class="menu-sub">Yangi xabar va qiziqishlar</div>
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 7. SOZLAMALAR -->
+    <div class="section-label">SOZLAMALAR</div>
+    <div style="background: #122118; border: 1px solid #1c3023; border-radius: 16px; overflow: hidden; margin-bottom: 16px;">
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">⚙️</span>
+          <div>
+            <div class="menu-title">Umumiy sozlamalar</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🤖</span>
+          <div>
+            <div class="menu-title">Tekin Sovchi yordamchisi</div>
+            <div class="menu-sub">Darhol javob — 24/7</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">💳</span>
+          <div>
+            <div class="menu-title">Mening kartalarim</div>
+            <div class="menu-sub">Saqlangan kartalar — qo'shish va o'chirish</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🧾</span>
+          <div>
+            <div class="menu-title">To'lovlar tarixi</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">🚫</span>
+          <div>
+            <div class="menu-title">Bloklanganlar</div>
+            <div class="menu-sub">Bloklagan odamlaringiz — blokdan chiqarish</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-left">
+          <span class="menu-icon">💌</span>
+          <div>
+            <div class="menu-title">Admin bilan bog'lanish</div>
+          </div>
+        </div>
+        <span style="color: #6b8273;">&gt;</span>
+      </div>
+    </div>
+
+    <!-- AI VERIFICATION FOOTER -->
+    <div style="background: #101c15; border: 1px solid #1a2e22; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px;">
+      <span style="color: #34d399; font-size: 18px;">🛡️</span>
+      <p style="font-size: 11px; color: #6b8273; line-height: 1.3;">
+        Profilingiz AI yuz tekshiruvidan o'tgan. Ma'lumotlaringiz uchunchi tomonga berilmaydi.
+      </p>
+    </div>
+
   </div>
 
   <!-- PASTKI NAVIGATSIYA BAR -->
@@ -328,54 +540,9 @@
           if (data.user.photoUrl) {
             document.getElementById('user-avatar').src = data.user.photoUrl;
           }
-
-          document.getElementById('inputName').value = data.user.name || '';
-          document.getElementById('inputAge').value = data.user.age || '';
-          document.getElementById('inputGender').value = data.user.gender || 'Erkak';
-          document.getElementById('inputRegion').value = data.user.region || '';
-          document.getElementById('inputJob').value = data.user.job || '';
-          document.getElementById('inputBio').value = data.user.bio || '';
         }
       } catch (err) {
         console.error(err);
-      }
-    }
-
-    async function saveProfile(e) {
-      e.preventDefault();
-      const telegramId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : '123456';
-      
-      let photoUrl = '';
-      const fileInput = document.getElementById('inputPhoto');
-      if (fileInput.files.length > 0) {
-        const formData = new FormData();
-        formData.append('photo', fileInput.files[0]);
-        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
-        const uploadData = await uploadRes.json();
-        if (uploadData.success) photoUrl = uploadData.photoUrl;
-      }
-
-      const payload = {
-        telegramId,
-        name: document.getElementById('inputName').value,
-        age: document.getElementById('inputAge').value,
-        gender: document.getElementById('inputGender').value,
-        region: document.getElementById('inputRegion').value,
-        job: document.getElementById('inputJob').value,
-        bio: document.getElementById('inputBio').value,
-        photoUrl: photoUrl || undefined
-      };
-
-      const res = await fetch('/api/user/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        alert("Anketa muvaffaqiyatli saqlandi va admin tasdig'iga yuborildi!");
-        loadUserProfile();
       }
     }
 
@@ -384,32 +551,15 @@
         const res = await fetch('/api/users');
         const data = await res.json();
         const container = document.getElementById('catalog-list');
-        const vipContainer = document.getElementById('vip-candidates-list');
 
         if (data.success && data.users.length > 0) {
-          const vipUsers = data.users.filter(u => u.isVip);
-          if (vipUsers.length > 0) {
-            vipContainer.innerHTML = vipUsers.map(u => `
-              <div style="min-width: 145px; width: 145px; height: 195px; border: 1.5px solid #d97706; border-radius: 16px; position: relative; overflow: hidden; background: url('${u.photoUrl || 'https://via.placeholder.com/150'}') center/cover; flex-shrink: 0;">
-                <div style="position: absolute; top: 10px; left: 10px; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">
-                  👑 VIP
-                </div>
-                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9));">
-                  <div style="font-size: 14px; font-weight: bold;">${u.name}, ${u.age}</div>
-                  <div style="font-size: 11px; color: #a3b8ab; margin-top: 2px;">${u.region}</div>
-                  <div style="font-size: 10px; color: #34d399; margin-top: 4px; font-weight: 600;">100% moslik</div>
-                </div>
-              </div>
-            `).join('');
-          }
-
           container.innerHTML = data.users.map(u => `
-            <div style="background: #14231a; border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;">
+            <div style="background: #122118; border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;">
               <img src="${u.photoUrl || 'https://via.placeholder.com/60'}" style="width: 60px; height: 60px; border-radius: 10px; object-fit: cover;">
               <div>
                 <h4 style="margin:0; font-size: 16px;">${u.name}, ${u.age}</h4>
                 <p style="margin: 4px 0 0 0; font-size: 12px; color: #8ea195;">📍 ${u.region}</p>
-                <p style="margin: 2px 0 0 0; font-size: 11px; color: #4ade80;">Kasbi: ${u.job || '-'}</p>
+                <p style="margin: 2px 0 0 0; font-size: 11px; color: #34d399;">Kasbi: ${u.job || '-'}</p>
               </div>
             </div>
           `).join('');
