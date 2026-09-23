@@ -161,6 +161,34 @@
     input:checked + .slider:before {
       transform: translateX(20px);
     }
+
+    /* Modal / Form input stili */
+    .form-group {
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #8ea195;
+      margin-bottom: 4px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      background: #0b140f;
+      border: 1px solid #203628;
+      color: #ffffff;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: #34d399;
+    }
   </style>
 </head>
 <body>
@@ -222,20 +250,51 @@
         <div style="display: flex; align-items: center; gap: 12px;">
           <img id="user-avatar" src="https://via.placeholder.com/60" style="width: 58px; height: 58px; border-radius: 14px; object-fit: cover;">
           <div>
-            <h3 id="user-name-age" style="margin: 0; font-size: 18px; font-weight: bold;">Skofild, 25</h3>
-            <p id="user-region" style="margin: 3px 0 0 0; font-size: 12px; color: #6b8273;">📍 Sirdaryo viloyati</p>
+            <h3 id="user-name-age" style="margin: 0; font-size: 18px; font-weight: bold;">Ism, Yosh</h3>
+            <p id="user-region" style="margin: 3px 0 0 0; font-size: 12px; color: #6b8273;">📍 Viloyat ko'rsatilmadi</p>
           </div>
         </div>
-        <button style="background: #182e21; border: 1px solid #284432; color: #34d399; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer;">Tahrirlash</button>
+        <button onclick="toggleEditModal(true)" style="background: #182e21; border: 1px solid #284432; color: #34d399; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer;">Tahrirlash</button>
+      </div>
+
+      <!-- ANKETA TAHRIRLASH FORMAMIZ (MODAL) -->
+      <div id="edit-profile-modal" style="display: none; background: #16281e; border: 1px solid #254231; border-radius: 16px; padding: 14px; margin-bottom: 14px;">
+        <h4 style="margin-bottom: 12px; color: #34d399; font-size: 15px;">Anketani to'ldirish / Tahrirlash</h4>
+        <form id="profile-form" onsubmit="saveProfile(event)">
+          <div class="form-group">
+            <label>Ismingiz:</label>
+            <input type="text" id="input-name" placeholder="Masalan: Zulfiqar" required>
+          </div>
+          <div class="form-group">
+            <label>Yoshinigiz:</label>
+            <input type="number" id="input-age" placeholder="Masalan: 25" required>
+          </div>
+          <div class="form-group">
+            <label>Viloyatingiz:</label>
+            <input type="text" id="input-region" placeholder="Masalan: Tashkent viloyati" required>
+          </div>
+          <div class="form-group">
+            <label>Kasbingiz:</label>
+            <input type="text" id="input-job" placeholder="Masalan: Dasturchi">
+          </div>
+          <div class="form-group">
+            <label>Rasm havolasi (URL):</label>
+            <input type="url" id="input-photo" placeholder="https://example.com/photo.jpg">
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button type="submit" style="flex: 1; background: #34d399; color: #0b140f; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer;">Saqlash</button>
+            <button type="button" onclick="toggleEditModal(false)" style="background: #24382c; color: #ffffff; border: none; padding: 10px 14px; border-radius: 10px; cursor: pointer;">Bekor qilish</button>
+          </div>
+        </form>
       </div>
 
       <!-- Profil to'ldirilganlik darajasi -->
       <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
         <span style="color: #8ea195;">Profil to'ldirilgani</span>
-        <span style="color: #34d399; font-weight: bold;">91% &gt;</span>
+        <span id="profile-progress-text" style="color: #34d399; font-weight: bold;">0% &gt;</span>
       </div>
       <div style="width: 100%; height: 6px; background: #1c3023; border-radius: 4px; overflow: hidden; margin-bottom: 14px;">
-        <div style="width: 91%; height: 100%; background: #34d399;"></div>
+        <div id="profile-progress-bar" style="width: 0%; height: 100%; background: #34d399; transition: width 0.3s;"></div>
       </div>
 
       <!-- Sovg'a baneri -->
@@ -244,7 +303,7 @@
           <span style="font-size: 18px;">🎁</span>
           <span style="font-size: 11px; color: #a3b8ab;">100% to'ldirsangiz — <b>1 bepul suhbat</b> sovg'a</span>
         </div>
-        <span style="font-size: 11px; color: #34d399; font-weight: bold; cursor: pointer;">To'ldirish &rarr;</span>
+        <span onclick="toggleEditModal(true)" style="font-size: 11px; color: #34d399; font-weight: bold; cursor: pointer;">To'ldirish &rarr;</span>
       </div>
 
       <div style="font-size: 11px; color: #6b8273; line-height: 1.3; margin-bottom: 12px;">
@@ -518,6 +577,10 @@
     const tg = window.Telegram ? window.Telegram.WebApp : null;
     if (tg) tg.expand();
 
+    function getTelegramId() {
+      return (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id : '123456';
+    }
+
     function switchTab(tabId, el) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
@@ -529,17 +592,72 @@
       if (tabId === 'profile') loadUserProfile();
     }
 
+    function toggleEditModal(show) {
+      document.getElementById('edit-profile-modal').style.display = show ? 'block' : 'none';
+    }
+
+    async function saveProfile(event) {
+      event.preventDefault();
+      const telegramId = getTelegramId();
+      
+      const payload = {
+        telegramId: telegramId,
+        name: document.getElementById('input-name').value,
+        age: parseInt(document.getElementById('input-age').value),
+        region: document.getElementById('input-region').value,
+        job: document.getElementById('input-job').value,
+        photoUrl: document.getElementById('input-photo').value
+      };
+
+      try {
+        const res = await fetch('/api/user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          alert("Anketingiz muvaffaqiyatli saqlandi!");
+          toggleEditModal(false);
+          loadUserProfile();
+        } else {
+          alert("Xatolik yuz berdi: " + (data.message || 'Saqlab bo\'lmadi'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server bilan bog'lanishda xatolik!");
+      }
+    }
+
     async function loadUserProfile() {
-      const telegramId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : '123456';
+      const telegramId = getTelegramId();
       try {
         const res = await fetch(`/api/user/${telegramId}`);
         const data = await res.json();
         if (data.success && data.user) {
-          document.getElementById('user-name-age').innerText = `${data.user.name || 'Foydalanuvchi'}, ${data.user.age || ''}`;
-          document.getElementById('user-region').innerText = `📍 ${data.user.region || 'Viloyat ko\'rsatilmadi'}`;
-          if (data.user.photoUrl) {
-            document.getElementById('user-avatar').src = data.user.photoUrl;
+          const u = data.user;
+          document.getElementById('user-name-age').innerText = `${u.name || 'Ismingiz'}, ${u.age || ''}`;
+          document.getElementById('user-region').innerText = `📍 ${u.region || 'Viloyat ko\'rsatilmadi'}`;
+          
+          if (u.photoUrl) {
+            document.getElementById('user-avatar').src = u.photoUrl;
+            document.getElementById('input-photo').value = u.photoUrl;
           }
+
+          // Inputlarga eski ma'lumotlarni joylash
+          document.getElementById('input-name').value = u.name || '';
+          document.getElementById('input-age').value = u.age || '';
+          document.getElementById('input-region').value = u.region || '';
+          document.getElementById('input-job').value = u.job || '';
+
+          // To'ldirilganlik foizini hisoblash
+          let fields = [u.name, u.age, u.region, u.job, u.photoUrl];
+          let filled = fields.filter(f => f).length;
+          let percent = Math.round((filled / fields.length) * 100);
+          
+          document.getElementById('profile-progress-text').innerText = `${percent}% >`;
+          document.getElementById('profile-progress-bar').style.width = `${percent}%`;
         }
       } catch (err) {
         console.error(err);
@@ -557,12 +675,14 @@
             <div style="background: #122118; border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: center;">
               <img src="${u.photoUrl || 'https://via.placeholder.com/60'}" style="width: 60px; height: 60px; border-radius: 10px; object-fit: cover;">
               <div>
-                <h4 style="margin:0; font-size: 16px;">${u.name}, ${u.age}</h4>
-                <p style="margin: 4px 0 0 0; font-size: 12px; color: #8ea195;">📍 ${u.region}</p>
+                <h4 style="margin:0; font-size: 16px;">${u.name || 'Foydalanuvchi'}, ${u.age || '-'}</h4>
+                <p style="margin: 4px 0 0 0; font-size: 12px; color: #8ea195;">📍 ${u.region || 'Viloyat ko\'rsatilmadi'}</p>
                 <p style="margin: 2px 0 0 0; font-size: 11px; color: #34d399;">Kasbi: ${u.job || '-'}</p>
               </div>
             </div>
           `).join('');
+        } else {
+          container.innerHTML = '<p style="text-align: center; color: #6b8273; padding: 20px;">Hali anketalar yo\'q</p>';
         }
       } catch (err) {
         console.error(err);
