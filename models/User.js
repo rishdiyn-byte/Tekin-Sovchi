@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  telegramId: { type: Number, required: true, unique: true },
+  telegramId: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   age: { type: Number, required: true },
-  gender: { type: String, enum: ['Erkak', 'Ayol'], required: true },
+  gender: { type: String, required: true },
   region: { type: String, required: true },
-  job: { type: String, default: 'Ko\'rsatilmagan' },
-  bio: { type: String, default: '' },
+  job: { type: String, default: '' },
   photoUrl: { type: String, default: '' },
+  bio: { type: String, default: '' },
   isVip: { type: Boolean, default: false },
+  isApproved: { type: Boolean, default: false }, // Moderatsiya holati
   createdAt: { type: Date, default: Date.now }
 });
 
